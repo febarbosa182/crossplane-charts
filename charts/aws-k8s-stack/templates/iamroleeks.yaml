@@ -1,0 +1,27 @@
+apiVersion: identity.aws.crossplane.io/v1beta1
+kind: IAMRole
+metadata:
+  name: {{ include "aws-k8s-stack.fullname" . }}-eks
+  labels:
+    {{- include "aws-k8s-stack.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    description: "IAM ROLE EKS for {{ include "aws-k8s-stack.fullname" . }} cluster"
+    assumeRolePolicyDocument: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+            "Service": [
+              "eks.amazonaws.com"
+              ]
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      }
+  deletionPolicy: Delete
+  providerConfigRef:
+    name: {{ include "aws-k8s-stack.fullname" . }}

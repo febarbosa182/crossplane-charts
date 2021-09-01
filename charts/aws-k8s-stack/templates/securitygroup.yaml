@@ -1,0 +1,15 @@
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: SecurityGroup
+metadata:
+  name: {{ include "aws-k8s-stack.fullname" . }}-sg
+  labels:
+    {{- include "aws-k8s-stack.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.region }}
+    vpcIdRef:
+      name: {{ include "aws-k8s-stack.fullname" . }}
+    groupName: {{ include "aws-k8s-stack.fullname" . }}-sg
+    description: Cluster communication with worker nodes
+  providerConfigRef:
+    name: {{ include "aws-k8s-stack.fullname" . }}

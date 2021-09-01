@@ -1,0 +1,25 @@
+{{- $baseName := include "aws-k8s-stack.fullname" . }}
+apiVersion: eks.aws.crossplane.io/v1alpha1
+kind: NodeGroup
+metadata:
+  name: {{ include "aws-k8s-stack.fullname" . }}
+  labels:
+    {{- include "aws-k8s-stack.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.region }}
+    clusterNameRef:
+      name: {{ include "aws-k8s-stack.fullname" . }}
+    subnetRefs:
+      {{- range $az := .Values.subnet.az }}
+      - name: "{{ $baseName }}-{{ .name }}"
+      {{- end }}
+    version: {{ .Values.nodeGroup.version | quote }}
+    instanceTypes: 
+    {{- toYaml .Values.nodeGroup.instanceTypes | nindent 4 }}
+    nodeRoleRef:
+      name: {{ include "aws-k8s-stack.fullname" . }}-node
+    scalingConfig:
+      {{- toYaml .Values.nodeGroup.scalingConfig | nindent 6 }}
+  providerConfigRef:
+    name: {{ include "aws-k8s-stack.fullname" . }}

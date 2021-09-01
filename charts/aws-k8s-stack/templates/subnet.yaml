@@ -1,0 +1,40 @@
+# Range for multi AZ 
+{{- $region := .Values.region }}
+{{- $baseName := include "aws-k8s-stack.fullname" . }}
+{{- $cidrBlock := .Values.subnet.cidrBlock }}
+{{- $vpcIdRef := include "aws-k8s-stack.fullname" . }}
+{{- $providerConfigRef := include "aws-k8s-stack.fullname" . }}
+{{- $mapPublicIPOnLaunch := .Values.subnet.mapPublicIPOnLaunch }}
+
+{{- $name := include "aws-k8s-stack.name" . }}
+{{- $managedby := .Release.Service }}
+{{- $chart := include "aws-k8s-stack.chart" . }}
+{{- $version := .Chart.AppVersion | quote }}
+
+{{ range .Values.subnet.az }}
+{{- $subnetName := printf "%s-%s" $baseName .name -}}
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: Subnet
+metadata:
+  name: {{ $subnetName }}
+  labels:
+    helm.sh/chart: {{ $chart }}
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ $baseName }}
+    app.kubernetes.io/version: {{ $version }}
+    app.kubernetes.io/managed-by: {{ $managedby }}
+spec:
+  forProvider:
+    region: {{ $region }}
+    availabilityZone: {{ $region }}{{ .name }}
+    cidrBlock: {{ .cidrBlock }}
+    vpcIdRef:
+      name: {{ $vpcIdRef }}
+    mapPublicIPOnLaunch: {{ $mapPublicIPOnLaunch }}
+    tags:
+    - key: kubernetes.io/cluster/{{ $baseName }}
+      value: shared
+  providerConfigRef:
+    name: {{ $providerConfigRef }}
+---
+{{ end }}

@@ -1,0 +1,12 @@
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: VPC
+metadata:
+  name: {{ include "aws-k8s-stack.fullname" . }}
+  labels:
+    {{- include "aws-k8s-stack.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.region }}
+    {{- toYaml .Values.vpc | nindent 4 }}
+  providerConfigRef:
+    name: {{ include "aws-k8s-stack.fullname" . }}

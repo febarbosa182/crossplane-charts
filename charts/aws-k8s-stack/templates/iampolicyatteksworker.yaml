@@ -1,0 +1,14 @@
+apiVersion: identity.aws.crossplane.io/v1beta1
+kind: IAMRolePolicyAttachment
+metadata:
+  name: {{ include "aws-k8s-stack.fullname" . }}-eks-worker
+  labels:
+    {{- include "aws-k8s-stack.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    policyArn: arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+    roleNameRef:
+      name: {{ include "aws-k8s-stack.fullname" . }}-node
+  deletionPolicy: Delete
+  providerConfigRef:
+    name: {{ include "aws-k8s-stack.fullname" . }}

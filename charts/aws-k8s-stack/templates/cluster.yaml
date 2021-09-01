@@ -1,0 +1,29 @@
+{{- $baseName := include "aws-k8s-stack.fullname" . }}
+apiVersion: eks.aws.crossplane.io/v1beta1
+kind: Cluster
+metadata:
+  name: {{ include "aws-k8s-stack.fullname" . }}
+  labels:
+    {{- include "aws-k8s-stack.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.region }}
+    roleArnRef:
+      name: {{ include "aws-k8s-stack.fullname" . }}-eks
+    resourcesVpcConfig:
+      {{- toYaml .Values.eks.resourcesVpcConfig | nindent 6 }}
+      subnetIdRefs:
+      {{- range .Values.subnet.az }}
+      - name: "{{ $baseName }}-{{ .name }}"
+      {{- end }}
+      securityGroupIdRefs:
+        - name: {{ include "aws-k8s-stack.fullname" . }}-sg
+    version: {{ .Values.eks.version | quote  }}
+    logging:
+      clusterLogging:
+      {{- toYaml .Values.eks.clusterLogging | nindent 6 }}
+  writeConnectionSecretToRef:
+    name: {{ include "aws-k8s-stack.fullname" . }}-conn
+    namespace: crossplane-system
+  providerConfigRef:
+    name: {{ include "aws-k8s-stack.fullname" . }}

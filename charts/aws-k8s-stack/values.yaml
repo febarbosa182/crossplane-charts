@@ -1,0 +1,54 @@
+# Default values for k8s-stack.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: ""
+fullnameOverride: ""
+
+creds: |
+  [default]
+  aws_access_key_id=XXXXXXXXX
+  aws_secret_access_key=XXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+region: us-east-2
+
+vpc:
+  cidrBlock: 10.0.0.0/16
+  enableDnsSupport: true
+  enableDnsHostNames: true
+  instanceTenancy: default
+  tags: []
+
+subnet:
+  az: 
+  - name: "a"
+    cidrBlock: 10.0.0.0/24
+  - name: "b"
+    cidrBlock: 10.0.1.0/24
+  - name: "c"
+    cidrBlock: 10.0.2.0/24
+  mapPublicIPOnLaunch: true
+
+eks:
+  version: "1.21"
+  resourcesVpcConfig:
+    endpointPrivateAccess: true
+    endpointPublicAccess: true
+  clusterLogging:
+  - enabled: false
+    types: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+
+nodeGroup:
+  version: "1.21"
+  instanceTypes:
+  - t3a.medium
+  scalingConfig:
+    desiredSize: 1
+    maxSize: 3
+    minSize: 1 
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

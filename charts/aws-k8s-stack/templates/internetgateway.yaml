@@ -1,0 +1,13 @@
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: InternetGateway
+metadata:
+  name: {{ include "aws-k8s-stack.fullname" . }}
+  labels:
+    {{- include "aws-k8s-stack.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.region }}
+    vpcIdRef:
+      name: {{ include "aws-k8s-stack.fullname" . }}
+  providerConfigRef:
+    name: {{ include "aws-k8s-stack.fullname" . }}

@@ -1,0 +1,23 @@
+{{- $baseName := include "aws-k8s-stack.fullname" . }}
+apiVersion: ec2.aws.crossplane.io/v1beta1
+kind: RouteTable
+metadata:
+  name: {{ include "aws-k8s-stack.fullname" . }}
+  labels:
+    {{- include "aws-k8s-stack.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.region }}
+    routes:
+      - destinationCidrBlock: 0.0.0.0/0
+        gatewayIdRef:
+          name: {{ include "aws-k8s-stack.fullname" . }}
+    associations:
+      {{- range .Values.subnet.az }}
+      - subnetIdRef:
+          name: "{{ $baseName }}-{{ .name }}"
+      {{- end }}
+    vpcIdRef:
+      name: {{ include "aws-k8s-stack.fullname" . }}
+  providerConfigRef:
+    name: {{ include "aws-k8s-stack.fullname" . }}
