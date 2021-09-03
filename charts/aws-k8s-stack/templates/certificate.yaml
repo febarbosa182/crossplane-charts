@@ -1,0 +1,18 @@
+apiVersion: acm.aws.crossplane.io/v1alpha1
+kind: Certificate
+metadata:
+  name: {{ include "aws-k8s-stack.fullname" . }}
+  labels:
+    {{- include "aws-k8s-stack.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    region: {{ .Values.region }}
+    domainName: {{ .Values.acm.domain }}
+    certificateTransparencyLoggingPreference: DISABLED
+    validationMethod: DNS
+    tags: []
+  providerConfigRef:
+    name: {{ include "aws-k8s-stack.fullname" . }}
+  writeConnectionSecretToRef:
+    name: {{ include "aws-k8s-stack.fullname" . }}-acm
+    namespace: crossplane-system

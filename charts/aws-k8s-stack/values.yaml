@@ -47,8 +47,5 @@ nodeGroup:
     maxSize: 3
     minSize: 1 
 
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+acm:
+  domain: test.domain.com

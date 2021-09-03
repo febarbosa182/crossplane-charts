@@ -56,3 +56,18 @@ helm upgrade --install aws-k8s-stack ./charts/aws-k8s-stack \
     --set-file creds=$YOUR_CREDENTIALS_FILE_PATH \
     --set region=$REGION
 ```
+
+Getting created resources:
+```sh
+# Install crossplane kubectl addon
+curl -sL https://raw.githubusercontent.com/crossplane/crossplane/master/install.sh | sh
+# Getting managed resources
+kubectl get managed
+```
+
+> To get managed resources in JSON format run "kubectl get managed -o json"
+
+Deleting stack:
+```sh
+helm delete aws-k8s-stack
+```

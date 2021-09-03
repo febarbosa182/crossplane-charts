@@ -1,0 +1,34 @@
+apiVersion: identity.aws.crossplane.io/v1beta1
+kind: IAMRole
+metadata:
+  name: {{ .Values.environmentName }}
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    description: "IAM Role for Cluster Autoscaler trust relationship."
+    assumeRolePolicyDocument: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "Federated": [
+                "{{ .Values.openIDConnectProviderARN }}"
+              ]
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+              "StringLike": {
+                "{{ .Values.openIDConnectProviderURL }}:sub": "system:serviceaccount:kube-system:*autoscaler*"
+              }
+            }
+          }
+        ]
+      }
+    tags: []
+  deletionPolicy: Delete
+  providerConfigRef:
+    name: {{ .Values.environmentName }}
+  
