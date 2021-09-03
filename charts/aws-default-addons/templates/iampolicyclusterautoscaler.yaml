@@ -1,14 +1,14 @@
 apiVersion: identity.aws.crossplane.io/v1alpha1
 kind: IAMPolicy
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ include "aws-default-addons.fullname" . }}-cluster-autoscaler
   labels:
     {{- include "aws-default-addons.labels" . | nindent 4 }}
 spec:
   forProvider:
-    name: iam-policy-cluster-autoscaler-{{ .Release.Name }}
+    name: {{ include "aws-default-addons.fullname" . }}-cluster-autoscaler
     description: "IAM Policy for Cluster AutoScale"
-    document: |
+    document: |-
       {
         "Version": "2012-10-17",
         "Statement": [
@@ -26,5 +26,6 @@ spec:
           }
         ]
       }
+  deletionPolicy: Delete
   providerConfigRef:
-    name: aws-provider-dev
+    name: {{ include "aws-default-addons.fullname" . }}

@@ -11,8 +11,8 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 If release name contains chart name it will be used as a full name.
 */}}
 {{- define "aws-default-addons.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- if .Values.environmentName }}
+{{- .Values.environmentName | trunc 63 | trimSuffix "-" }}
 {{- else }}
 {{- $name := default .Chart.Name .Values.nameOverride }}
 {{- if contains $name .Release.Name }}

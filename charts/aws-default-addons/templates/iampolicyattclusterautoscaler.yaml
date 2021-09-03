@@ -1,0 +1,16 @@
+apiVersion: identity.aws.crossplane.io/v1beta1
+kind: IAMRolePolicyAttachment
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-cluster-autoscaler
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    policyArnRef:
+      name: {{ include "aws-default-addons.fullname" . }}-cluster-autoscaler
+    roleNameRef:
+      name: {{ include "aws-default-addons.fullname" . }}-cluster-autoscaler
+  deletionPolicy: Delete
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
+  

@@ -1,17 +1,18 @@
 apiVersion: identity.aws.crossplane.io/v1beta1
 kind: IAMRole
 metadata:
-  name: {{ include "aws-default-addons.fullname" . }}-cluster-autoscaler
+  name: {{ include "aws-default-addons.fullname" . }}-external-dns
   labels:
     {{- include "aws-default-addons.labels" . | nindent 4 }}
 spec:
   forProvider:
-    description: "IAM Role for Cluster Autoscaler on {{ include "aws-default-addons.fullname" . }} cluster"
+    description: "IAM Role for External DNS on {{ include "aws-default-addons.fullname" . }} cluster"
     assumeRolePolicyDocument: |
       {
         "Version": "2012-10-17",
         "Statement": [
           {
+            "Sid": "",
             "Effect": "Allow",
             "Principal": {
               "Federated": [
@@ -20,8 +21,9 @@ spec:
             },
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Condition": {
-              "StringLike": {
-                "{{ .Values.openIDConnectProviderURL | trimSuffix "https://" }}:sub": "system:serviceaccount:kube-system:*autoscaler*"
+              "StringEquals": {
+                "{{ .Values.openIDConnectProviderURL | trimSuffix "https://" }}:aud": "sts.amazonaws.com",
+                "{{ .Values.openIDConnectProviderURL | trimSuffix "https://" }}:sub": "system:serviceaccount:external-dns:*external-dns*"
               }
             }
           }

@@ -49,12 +49,14 @@ aws_secret_access_key=XXXXXXXXXXXXXXXXXXXXXXXXXXX
 ![Architecture](./diagrams/architecture.png)
 
 Creating definied stack.
-Replace the environment variables by the path of your previously create credentials file and de desired [AWS Region](https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions)
+Replace the environment variables by the path of your previously create credentials file, desired [AWS Region](https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-available-regions) and especific environment name.
 ```sh
 # This command use local aws chart stach
-helm upgrade --install aws-k8s-stack ./charts/aws-k8s-stack \
+helm upgrade --install $ENVIRONMENT_NAME ./charts/aws-k8s-stack \
     --set-file creds=$YOUR_CREDENTIALS_FILE_PATH \
-    --set region=$REGION
+    --set region=$REGION \
+    --set fullnameOverride=$ENVIRONMENT_NAME \ 
+    --set nameOverride=$ENVIRONMENT_NAME
 ```
 
 Getting created resources:
@@ -70,4 +72,14 @@ kubectl get managed
 Deleting stack:
 ```sh
 helm delete aws-k8s-stack
+```
+
+After cluster creation, addons instalation are enabled.
+First get configuration and connection informations:
+```sh
+# Associate OIDC with cluster
+eksctl utils associate-iam-oidc-provider --cluster aws-k8s-stack --approve
+# Get OIDC URL
+openIDConnectProviderURL=$(aws eks describe-cluster --name aws-k8s-stack --query "cluster.identity.oidc.issuer" --output text)
+# Get OIDC ARN
 ```

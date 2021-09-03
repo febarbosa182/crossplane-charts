@@ -1,0 +1,18 @@
+dependencies:
+- name: cluster-autoscaler
+  repository: https://kubernetes.github.io/autoscaler
+  version: 9.10.5
+- name: aws-ebs-csi-driver
+  repository: https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+  version: 2.1.0
+- name: metrics-server
+  repository: https://charts.bitnami.com/bitnami
+  version: 5.9.3
+- name: kubernetes-dashboard
+  repository: https://kubernetes.github.io/dashboard
+  version: 5.0.0
+- name: kube-prometheus-stack
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 18.0.2
+digest: sha256:9197ca76aa5b236bea37c05519e4cf5bf7b619377200ef000ca60204a83c2950
+generated: "2021-09-03T18:20:48.250118-03:00"

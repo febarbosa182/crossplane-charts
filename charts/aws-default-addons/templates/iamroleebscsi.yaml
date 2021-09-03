@@ -1,12 +1,12 @@
 apiVersion: identity.aws.crossplane.io/v1beta1
 kind: IAMRole
 metadata:
-  name: {{ include "aws-default-addons.fullname" . }}-cluster-autoscaler
+  name: {{ include "aws-default-addons.fullname" . }}-ebs-csi
   labels:
     {{- include "aws-default-addons.labels" . | nindent 4 }}
 spec:
   forProvider:
-    description: "IAM Role for Cluster Autoscaler on {{ include "aws-default-addons.fullname" . }} cluster"
+    description: "IAM Role for EBS CSI on {{ include "aws-default-addons.fullname" . }} cluster"
     assumeRolePolicyDocument: |
       {
         "Version": "2012-10-17",
@@ -20,8 +20,12 @@ spec:
             },
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Condition": {
-              "StringLike": {
-                "{{ .Values.openIDConnectProviderURL | trimSuffix "https://" }}:sub": "system:serviceaccount:kube-system:*autoscaler*"
+              "StringEquals": {
+                "{{ .Values.openIDConnectProviderURL | trimSuffix "https://" }}:sub": [
+                  "system:serviceaccount:kube-system:ebs-csi-controller-sa",
+                  "system:serviceaccount:kube-system:ebs-csi-node-sa",
+                  "system:serviceaccount:kube-system:ebs-snapshot-controller"
+                ]
               }
             }
           }

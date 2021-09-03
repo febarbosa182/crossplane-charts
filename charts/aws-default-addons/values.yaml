@@ -2,10 +2,12 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+nameOverride: aws-k8s-stack
 environmentName: aws-k8s-stack
 openIDConnectProviderURL: https://oidc.eks.region.amazonaws.com/id/XXXXXXXXXXXXXX
 openIDConnectProviderARN: XXXXXXXXXXXXXXXXXXX
 clusterARN: arn:aws:eks:region:accountID:cluster/cluster-name
+domain: &domain test.domain.com
 
 global: 
   region: &region us-east-1
@@ -74,10 +76,11 @@ aws-ebs-csi-driver:
     volumeBindingMode: WaitForFirstConsumer
     allowVolumeExpansion: true
 
-metricsServer:
-
 kubernetesDashboard:
-  enabled: true
+  ingress:
+    enabled: true
+    hosts:
+    - kubernetes-dashboard.domain
 
 monitoring:
   enabled: true
