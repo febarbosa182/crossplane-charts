@@ -1,0 +1,14 @@
+apiVersion: route53.aws.crossplane.io/v1alpha1
+kind: HostedZone
+metadata:
+  name: {{ include "aws-k8s-stack.fullname" . }}
+  labels:
+    {{- include "aws-k8s-stack.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    name: {{ .Values.route53.domain }}
+    vpcIdRef:
+      name: {{ include "aws-k8s-stack.fullname" . }}
+  deletionPolicy: Delete
+  providerConfigRef:
+    name: {{ include "aws-k8s-stack.fullname" . }}

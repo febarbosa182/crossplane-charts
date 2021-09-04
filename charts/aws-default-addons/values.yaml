@@ -80,7 +80,7 @@ kubernetesDashboard:
   ingress:
     enabled: true
     hosts:
-    - kubernetes-dashboard.domain
+    - kubernetes-dashboard.*domain
 
 monitoring:
   enabled: true

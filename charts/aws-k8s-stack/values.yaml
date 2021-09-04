@@ -47,5 +47,8 @@ nodeGroup:
     maxSize: 3
     minSize: 1 
 
+route53:
+  domain: &domain test.domain.com
+
 acm:
-  domain: test.domain.com
+  domain: *domain

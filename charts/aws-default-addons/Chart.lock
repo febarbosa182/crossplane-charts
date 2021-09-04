@@ -11,8 +11,5 @@ dependencies:
 - name: kubernetes-dashboard
   repository: https://kubernetes.github.io/dashboard
   version: 5.0.0
-- name: kube-prometheus-stack
-  repository: https://prometheus-community.github.io/helm-charts
-  version: 18.0.2
-digest: sha256:9197ca76aa5b236bea37c05519e4cf5bf7b619377200ef000ca60204a83c2950
-generated: "2021-09-03T18:20:48.250118-03:00"
+digest: sha256:c1fbfe357b55150b67b80df9bd48d7fddea7556c1ccfd20db1f2657fc7bed4fa
+generated: "2021-09-04T17:30:03.289079-03:00"
