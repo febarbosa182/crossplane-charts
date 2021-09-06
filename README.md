@@ -72,7 +72,7 @@ kubectl get managed
 
 Deleting stack (only needed if you dont proceed to addons install):
 ```sh
-helm delete aws-k8s-stack
+helm delete $ENVIRONMENT_NAME
 ```
 
 ### AWS Addons Stack
@@ -84,9 +84,9 @@ After cluster creation, addons instalation are enabled.
 First get configuration and connection informations:
 ```sh
 # Associate OIDC with cluster
-eksctl utils associate-iam-oidc-provider --cluster aws-k8s-stack --approve --region $REGION 
+eksctl utils associate-iam-oidc-provider --cluster $ENVIRONMENT_NAME --approve --region $REGION 
 # Get OIDC URL
-OIDC_URL=$(aws eks describe-cluster --name aws-k8s-stack --query "cluster.identity.oidc.issuer" --region $REGION --output text)
+OIDC_URL=$(aws eks describe-cluster --name $ENVIRONMENT_NAME --query "cluster.identity.oidc.issuer" --region $REGION --output text)
 # Get account ID
 ACCOUNT_ID=$(aws sts get-caller-identity --query "Account")
 ```
