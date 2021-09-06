@@ -1,26 +1,35 @@
 apiVersion: identity.aws.crossplane.io/v1alpha1
 kind: IAMPolicy
 metadata:
-  name: {{ include "aws-default-addons.fullname" . }}-enternal-dns
+  name: {{ include "aws-default-addons.fullname" . }}-external-dns
   labels:
     {{- include "aws-default-addons.labels" . | nindent 4 }}
 spec:
   forProvider:
-    name: {{ include "aws-default-addons.fullname" . }}-enternal-dns
+    name: {{ include "aws-default-addons.fullname" . }}-external-dns
     description: "IAM Policy for External DNS"
     document: |-
       {
         "Version": "2012-10-17",
         "Statement": [
           {
-            "Action": [
-             "route53:ChangeResourceRecordSets",
-             "route53:ListHostedZones",
-             "route53:ListResourceRecordSets",
-             "sts:AssumeRole"
-            ],
             "Effect": "Allow",
-            "Resource": "*"
+            "Action": [
+              "route53:ChangeResourceRecordSets"
+            ],
+            "Resource": [
+              "arn:aws:route53:::hostedzone/*"
+            ]
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+                "route53:ListHostedZones",
+                "route53:ListResourceRecordSets"
+            ],
+            "Resource": [
+                "*"
+            ]
           }
         ]
       }

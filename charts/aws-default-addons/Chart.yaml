@@ -14,11 +14,13 @@ dependencies:
 - name: metrics-server
   version: "5.9.3"
   repository: "https://charts.bitnami.com/bitnami"
-- name: kubernetes-dashboard
-  version: "5.0.0"
-  repository: "https://kubernetes.github.io/dashboard"
-  condition: kubernetesDashboard.enabled
+- name: external-dns
+  version: "1.2.0"
+  repository: https://kubernetes-sigs.github.io/external-dns/
+# - name: kubernetes-dashboard
+#   version: "5.0.0"
+#   repository: "https://kubernetes.github.io/dashboard"
+#   condition: kubernetesDashboard.enabled
 # - name: kube-prometheus-stack
 #   version: "18.0.2"
 #   repository: https://prometheus-community.github.io/helm-charts
-#   condition: monitoring.enabled

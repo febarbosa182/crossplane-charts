@@ -1,15 +1,15 @@
 apiVersion: identity.aws.crossplane.io/v1beta1
 kind: IAMRolePolicyAttachment
 metadata:
-  name: {{ include "aws-default-addons.fullname" . }}-enternal-dns
+  name: {{ include "aws-default-addons.fullname" . }}-external-dns
   labels:
     {{- include "aws-default-addons.labels" . | nindent 4 }}
 spec:
   forProvider:
     policyArnRef:
-      name: {{ include "aws-default-addons.fullname" . }}-enternal-dns
+      name: {{ include "aws-default-addons.fullname" . }}-external-dns
     roleNameRef:
-      name: {{ include "aws-default-addons.fullname" . }}-enternal-dns
+      name: {{ include "aws-default-addons.fullname" . }}-external-dns
   deletionPolicy: Delete
   providerConfigRef:
     name: {{ include "aws-default-addons.fullname" . }}

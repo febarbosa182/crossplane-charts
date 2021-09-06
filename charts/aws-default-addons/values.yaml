@@ -5,12 +5,8 @@
 nameOverride: aws-k8s-stack
 environmentName: aws-k8s-stack
 openIDConnectProviderURL: https://oidc.eks.region.amazonaws.com/id/XXXXXXXXXXXXXX
-openIDConnectProviderARN: XXXXXXXXXXXXXXXXXXX
-clusterARN: arn:aws:eks:region:accountID:cluster/cluster-name
 domain: &domain test.domain.com
-
-global: 
-  region: &region us-east-1
+region: &region us-east-1
 
 clusterAutoScaler:
   awsRegion: *region
@@ -76,11 +72,19 @@ aws-ebs-csi-driver:
     volumeBindingMode: WaitForFirstConsumer
     allowVolumeExpansion: true
 
-kubernetesDashboard:
-  ingress:
-    enabled: true
-    hosts:
-    - kubernetes-dashboard.*domain
+external-dns:
+  aws:
+    region: *region
+    assumeRoleArn: "arn:aws:iam::XXXXXXXXXXX:role/EksExternalDNS"
+  serviceAccount:
+    annotations: 
+      eks.amazonaws.com/role-arn: arn:aws:iam::XXXXXXXXXXX:role/EksExternalDNS
+  domainFilters: [*domain]
+    
 
-monitoring:
-  enabled: true
+# kubernetesDashboard:
+#   ingress:
+#     enabled: true
+#     hosts:
+#     - kubernetes-dashboard.*domain
+

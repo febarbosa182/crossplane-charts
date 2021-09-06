@@ -7,8 +7,6 @@ metadata:
 spec:
   forProvider:
     name: {{ .Values.route53.domain }}
-    vpcIdRef:
-      name: {{ include "aws-k8s-stack.fullname" . }}
   deletionPolicy: Delete
   providerConfigRef:
     name: {{ include "aws-k8s-stack.fullname" . }}

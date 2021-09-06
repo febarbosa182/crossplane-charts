@@ -15,7 +15,7 @@ spec:
             "Effect": "Allow",
             "Principal": {
               "Federated": [
-                "{{ .Values.openIDConnectProviderARN }}"
+                "arn:aws:iam::{{ .Values.accountID }}:oidc-provider/{{ .Values.openIDConnectProviderURL | trimSuffix "https://" }}"
               ]
             },
             "Action": "sts:AssumeRoleWithWebIdentity",

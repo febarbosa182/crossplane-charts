@@ -8,9 +8,10 @@ spec:
   forProvider:
     region: {{ .Values.region }}
     domainName: {{ .Values.acm.domain }}
-    certificateTransparencyLoggingPreference: DISABLED
     validationMethod: DNS
-    tags: []
+    tags: 
+    - key: Name
+      value: {{ include "aws-k8s-stack.fullname" . }}
   providerConfigRef:
     name: {{ include "aws-k8s-stack.fullname" . }}
   writeConnectionSecretToRef:
