@@ -27,11 +27,13 @@ Add necessary helm repositories
 helm repo add crossplane-stable https://charts.crossplane.io/stable
 # Update chart repository index
 helm repo update
+# Create namespace for crossplane
+kubectl create namespace crossplane-system
 # Install crossplane with necessary provider enabled
 helm upgrade --install crossplane \
     crossplane-stable/crossplane \
     -n crossplane-system \
-    --version "1.3.1" \
+    --version "1.4.1" \
     --set provider.packages="{crossplane/provider-aws:v0.19.0,crossplane/provider-helm:v0.8.0}"
 ```
 
@@ -53,7 +55,7 @@ Replace the environment variables by the path of your previously create credenti
 ```sh
 # This command use local aws chart stack
 helm upgrade --install $ENVIRONMENT_NAME ./charts/aws-k8s-stack \
-    --set-file creds=$YOUR_CREDENTIALS_FILE_PATH \
+    --set-file creds=$e \
     --set region=$REGION \
     --set fullnameOverride=$ENVIRONMENT_NAME \ 
     --set nameOverride=$ENVIRONMENT_NAME \
@@ -80,6 +82,7 @@ helm delete $ENVIRONMENT_NAME
 After cluster creation, addons instalation are enabled.
 
  - [EBS CSI Driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) 1.2.0
+ - [External DNS](https://github.com/kubernetes-sigs/external-dns) 0.9.0
 
 First get configuration and connection informations:
 ```sh
@@ -88,15 +91,15 @@ eksctl utils associate-iam-oidc-provider --cluster $ENVIRONMENT_NAME --approve -
 # Get OIDC URL
 OIDC_URL=$(aws eks describe-cluster --name $ENVIRONMENT_NAME --query "cluster.identity.oidc.issuer" --region $REGION --output text)
 # Get account ID
-ACCOUNT_ID=$(aws sts get-caller-identity --query "Account")
+ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" | tr -d '"')
 ```
 
 Install definied addons stack
 ```sh
 # This command use local aws default addons chart
 helm upgrade --install $ENVIRONMENT_NAME-addons ./charts/aws-default-addons \
-    --set nameOverride=$ENVIRONMENT_NAME \
     --set environmentName=$ENVIRONMENT_NAME \
+    --set accountID=$ACCOUNT_ID \
     --set openIDConnectProviderURL=$OIDC_URL \
     --set region=$REGION \
     --set domain=$DOMAIN
