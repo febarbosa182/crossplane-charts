@@ -34,6 +34,8 @@ spec:
     tags:
     - key: kubernetes.io/cluster/{{ $baseName }}
       value: shared
+    - key: kubernetes.io/role/elb
+      value: "1"
   providerConfigRef:
     name: {{ $providerConfigRef }}
 ---

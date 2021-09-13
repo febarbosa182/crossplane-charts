@@ -48,7 +48,5 @@ nodeGroup:
     minSize: 1 
 
 route53:
-  domain: &domain test.domain.com
+  domain: test.domain.com
 
-acm:
-  domain: *domain
