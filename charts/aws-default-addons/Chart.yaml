@@ -5,18 +5,12 @@ type: application
 version: 0.1.0
 appVersion: "0.1.0"
 dependencies:
-- name: cluster-autoscaler
-  version: "9.10.5"
-  repository: "https://kubernetes.github.io/autoscaler"
-- name: aws-ebs-csi-driver
-  version: "2.1.0"
-  repository: "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
-- name: metrics-server
-  version: "5.9.3"
-  repository: "https://charts.bitnami.com/bitnami"
-- name: external-dns
-  version: "1.2.0"
-  repository: https://kubernetes-sigs.github.io/external-dns/
+# - name: metrics-server
+#   version: "5.9.3"
+#   repository: "https://charts.bitnami.com/bitnami"
+# - name: external-dns
+#   version: "1.2.0"
+#   repository: https://kubernetes-sigs.github.io/external-dns/
 # - name: kubernetes-dashboard
 #   version: "5.0.0"
 #   repository: "https://kubernetes.github.io/dashboard"
