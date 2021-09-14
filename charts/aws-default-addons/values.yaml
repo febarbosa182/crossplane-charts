@@ -2,89 +2,12 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-nameOverride: aws-k8s-stack
-environmentName: aws-k8s-stack
+environmentName: &environmentName aws-k8s-stack
+nameOverride: *environmentName
+accountID: XXXXXXXXXX
 openIDConnectProviderURL: https://oidc.eks.region.amazonaws.com/id/XXXXXXXXXXXXXX
-domain: &domain test.domain.com
-region: &region us-east-1
+domain: test.domain.com
+region: us-east-1
 
-clusterAutoScaler:
-  awsRegion: *region
-  cloudProvider: aws
-  rbac:
-    serviceAccount:
-      annotations: {}
-
-aws-ebs-csi-driver:
-  controller:
-    region: *region
-    serviceAccount:
-      annotations: {}
-  node:
-    tolerateAllTaints: true
-    serviceAccount:
-      annotations: {}
-  storageClasses:
-  - name: gp3
-    annotations:
-      storageclass.kubernetes.io/is-default-class: "true"
-    provisioner: ebs.csi.aws.com
-    parameters:
-      type: gp3
-      csi.storage.k8s.io/fstype: ext4
-    volumeBindingMode: WaitForFirstConsumer
-    allowVolumeExpansion: true
-  - name: gp2
-    provisioner: ebs.csi.aws.com
-    parameters:
-      type: gp2
-      csi.storage.k8s.io/fstype: ext4
-    volumeBindingMode: WaitForFirstConsumer
-    allowVolumeExpansion: true
-  - name: high-iops-ssd
-    provisioner: ebs.csi.aws.com
-    parameters:
-      type: io1
-      iopsPerGB: "50"
-      csi.storage.k8s.io/fstype: ext4
-    volumeBindingMode: WaitForFirstConsumer
-    allowVolumeExpansion: true
-  - name: medium-iops-ssd
-    provisioner: ebs.csi.aws.com
-    parameters:
-      type: io1
-      iopsPerGB: "25"
-      csi.storage.k8s.io/fstype: ext4
-    volumeBindingMode: WaitForFirstConsumer
-    allowVolumeExpansion: true
-  - name: throughput
-    provisioner: ebs.csi.aws.com
-    parameters:
-      type: st1
-      csi.storage.k8s.io/fstype: ext4
-    volumeBindingMode: WaitForFirstConsumer
-    allowVolumeExpansion: true
-  - name: cold-storage
-    provisioner: ebs.csi.aws.com
-    parameters:
-      type: sc1
-      csi.storage.k8s.io/fstype: ext4
-    volumeBindingMode: WaitForFirstConsumer
-    allowVolumeExpansion: true
-
-external-dns:
-  aws:
-    region: *region
-    assumeRoleArn: "arn:aws:iam::XXXXXXXXXXX:role/EksExternalDNS"
-  serviceAccount:
-    annotations: 
-      eks.amazonaws.com/role-arn: arn:aws:iam::XXXXXXXXXXX:role/EksExternalDNS
-  domainFilters: [*domain]
-    
-
-# kubernetesDashboard:
-#   ingress:
-#     enabled: true
-#     hosts:
-#     - kubernetes-dashboard.*domain
-
+monitoring:
+  enabled: true
