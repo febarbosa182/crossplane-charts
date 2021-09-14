@@ -41,7 +41,7 @@ eks:
 nodeGroup:
   version: "1.21"
   instanceTypes:
-  - t3a.medium
+  - t3a.large
   scalingConfig:
     desiredSize: 1
     maxSize: 3
