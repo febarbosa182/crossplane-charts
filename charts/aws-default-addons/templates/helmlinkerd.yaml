@@ -1,0 +1,75 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-linkerd-cni
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: linkerd2-cni
+      repository: https://helm.linkerd.io/stable
+      version: 2.10.2
+    namespace: default
+#   skipCreateNamespace: true
+#   wait: true
+    values: {}
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-linkerd
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: linkerd2
+      repository: https://helm.linkerd.io/stable
+      version: 2.10.2
+    namespace: default
+#   skipCreateNamespace: true
+#   wait: true
+    values: 
+      cniEnabled: true
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-linkerd-viz
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: linkerd-viz
+      repository: https://helm.linkerd.io/stable
+      version: 2.10.2
+    namespace: default
+#   skipCreateNamespace: true
+#   wait: true
+    values: 
+      linkerdVersion: stable-2.10.2
+      prometheusUrl: "{{ .Values.environmentName }}-prometheus-s-prometheus"
+      grafanaUrl: "{{ .Values.environmentName }}-prometheus-stack-grafana"
+      # Set this to `jaeger.linkerd-jaeger.svc.<clusterDomain>` if you plan to use jaeger extension
+      jaegerUrl: ""
+      grafana:
+        enabled: false
+      prometheus:
+        enabled: false
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}

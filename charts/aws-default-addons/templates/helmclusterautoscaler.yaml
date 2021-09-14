@@ -1,0 +1,27 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-cluster-autoscaler
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: cluster-autoscaler
+      repository: https://kubernetes.github.io/autoscaler
+      version: 9.10.6
+    namespace: kube-system
+#   skipCreateNamespace: true
+#   wait: true
+    values:
+      awsRegion: {{ .Values.region }}
+      cloudProvider: aws
+      rbac:
+        serviceAccount:
+          annotations:
+            eks.amazonaws.com/role-arn: "arn:aws:iam::{{ .Values.accountID }}:role/{{ include "aws-default-addons.fullname" . }}-cluster-autoscaler"
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}

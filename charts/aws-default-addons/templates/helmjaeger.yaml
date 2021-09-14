@@ -1,0 +1,31 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-jaeger
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: jaeger-operator
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 2.23.0
+    namespace: jaeger
+#   skipCreateNamespace: true
+#   wait: true
+    values:
+      jaeger:
+        create: true
+        namespace: jaeger
+        spec: 
+          ingress:
+            enabled: true
+            annotations:
+              kubernetes.io/ingress.class: nginx
+            hosts:
+            - jaeger.{{ .Values.domain }}
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}

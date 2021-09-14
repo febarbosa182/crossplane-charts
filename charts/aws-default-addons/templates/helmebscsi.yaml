@@ -1,0 +1,77 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-ebs-csi
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: aws-ebs-csi-driver
+      repository: https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+      version: 2.1.0
+    namespace: kube-system
+#   skipCreateNamespace: true
+#   wait: true
+    values: 
+      controller:
+        region: {{ .Values.region }}
+        serviceAccount:
+          annotations: 
+            eks.amazonaws.com/role-arn: "arn:aws:iam::{{ .Values.accountID }}:role/{{ include "aws-default-addons.fullname" . }}-ebs-csi"
+      node:
+        tolerateAllTaints: true
+        serviceAccount:
+          annotations: 
+            eks.amazonaws.com/role-arn: "arn:aws:iam::{{ .Values.accountID }}:role/{{ include "aws-default-addons.fullname" . }}-ebs-csi"
+      storageClasses:
+        - name: gp3
+          provisioner: ebs.csi.aws.com
+          parameters:
+            type: gp3
+            csi.storage.k8s.io/fstype: ext4
+          volumeBindingMode: WaitForFirstConsumer
+          allowVolumeExpansion: true
+        #   GP2 already exists by default
+        # - name: gp2
+        #   provisioner: ebs.csi.aws.com
+        #   parameters:
+        #     type: gp2
+        #     csi.storage.k8s.io/fstype: ext4
+        #   volumeBindingMode: WaitForFirstConsumer
+          allowVolumeExpansion: true
+        - name: high-iops-ssd
+          provisioner: ebs.csi.aws.com
+          parameters:
+            type: io1
+            iopsPerGB: "50"
+            csi.storage.k8s.io/fstype: ext4
+          volumeBindingMode: WaitForFirstConsumer
+          allowVolumeExpansion: true
+        - name: medium-iops-ssd
+          provisioner: ebs.csi.aws.com
+          parameters:
+            type: io1
+            iopsPerGB: "25"
+            csi.storage.k8s.io/fstype: ext4
+          volumeBindingMode: WaitForFirstConsumer
+          allowVolumeExpansion: true
+        - name: throughput
+          provisioner: ebs.csi.aws.com
+          parameters:
+            type: st1
+            csi.storage.k8s.io/fstype: ext4
+          volumeBindingMode: WaitForFirstConsumer
+          allowVolumeExpansion: true
+        - name: cold-storage
+          provisioner: ebs.csi.aws.com
+          parameters:
+            type: sc1
+            csi.storage.k8s.io/fstype: ext4
+          volumeBindingMode: WaitForFirstConsumer
+          allowVolumeExpansion: true
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}

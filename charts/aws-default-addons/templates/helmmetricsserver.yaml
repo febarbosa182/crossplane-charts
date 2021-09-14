@@ -1,0 +1,25 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-metrics-server
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: metrics-server
+      repository: https://charts.bitnami.com/bitnami
+      version: 5.9.3
+    namespace: kube-system
+#   skipCreateNamespace: true
+#   wait: true
+    values: 
+      apiService:
+        create: true
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
+
+

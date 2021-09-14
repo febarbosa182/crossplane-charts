@@ -1,0 +1,35 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-kubernetes-dashboard
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: kubernetes-dashboard
+      repository: https://kubernetes.github.io/dashboard/
+      version: 5.0.0
+    namespace: kubernetes-dashboard
+#   skipCreateNamespace: true
+#   wait: true
+    values: 
+      extraArgs:
+      - --enable-skip-login
+      - --enable-insecure-login
+      - --system-banner="Welcome to {{ .Values.environmentName }} Kubernetes Dashboard"
+      rbac:
+        clusterReadOnlyRole: true
+      ingress:
+        enabled: true
+        ## Kubernetes Dashboard Ingress Class
+        className: nginx
+        paths:
+        - / 
+        hosts:
+        - kubernetes-dashboard.{{ .Values.domain }}
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
