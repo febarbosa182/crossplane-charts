@@ -6,11 +6,11 @@ metadata:
     helm.sh/hook: "pre-install"
     helm.sh/hook-weight: "-1"
   labels:
-    {{- include "aws-default-addons.fullname" . | nindent 4 }}
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
 spec:
   credentials:
     source: Secret
     secretRef:
       namespace: crossplane-system
       key: kubeconfig
-      name: {{ .Values.environmentName }}-conn
+      name: {{ include "aws-default-addons.fullname" . }}-conn
