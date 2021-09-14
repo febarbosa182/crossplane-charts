@@ -15,13 +15,13 @@ spec:
             "Effect": "Allow",
             "Principal": {
               "Federated": [
-                "arn:aws:iam::{{ .Values.accountID }}:oidc-provider/{{ .Values.openIDConnectProviderURL | trimSuffix "https://" }}"
+                "arn:aws:iam::{{ .Values.accountID }}:oidc-provider/{{ .Values.openIDConnectProviderURL | trimPrefix "https://" }}"
               ]
             },
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Condition": {
               "StringLike": {
-                "{{ .Values.openIDConnectProviderURL | trimSuffix "https://" }}:sub": "system:serviceaccount:kube-system:*autoscaler*"
+                "{{ .Values.openIDConnectProviderURL | trimPrefix "https://" }}:sub": "system:serviceaccount:kube-system:*-cluster-autoscaler"
               }
             }
           }
