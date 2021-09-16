@@ -1,0 +1,25 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-flagger
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: flagger
+      repository: https://flagger.app
+      version: 1.13.0
+    namespace: linkerd
+#   skipCreateNamespace: true
+#   wait: true
+    values:
+      crd:
+        create: true
+      meshProvider: linkerd
+      metricsServer: http://{{ .Values.environmentName }}-prometheus-s-prometheus:9090
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
