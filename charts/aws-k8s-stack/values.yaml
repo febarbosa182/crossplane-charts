@@ -48,5 +48,6 @@ nodeGroup:
     minSize: 1 
 
 route53:
+  enabled: true
   domain: test.domain.com
 

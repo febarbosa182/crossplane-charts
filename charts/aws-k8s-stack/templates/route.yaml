@@ -1,3 +1,4 @@
+{{ if .Values.route53.enabled }}
 apiVersion: route53.aws.crossplane.io/v1alpha1
 kind: HostedZone
 metadata:
@@ -10,3 +11,4 @@ spec:
   deletionPolicy: Delete
   providerConfigRef:
     name: {{ include "aws-k8s-stack.fullname" . }}
+{{ end }}
