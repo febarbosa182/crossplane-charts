@@ -11,10 +11,11 @@ spec:
       name: linkerd2-cni
       repository: https://helm.linkerd.io/stable
       version: 2.10.2
-    namespace: default
+    namespace: linkerd-cni
 #   skipCreateNamespace: true
 #   wait: true
-    values: {}
+    values: 
+      installNamespace: false
     set: []
     valuesFrom: []
   providerConfigRef:
@@ -27,17 +28,53 @@ metadata:
   labels:
     {{- include "aws-default-addons.labels" . | nindent 4 }}
 spec:
-  rollbackLimit: 3
+  rollbackLimit: 3  
   forProvider:
     chart:
       name: linkerd2
       repository: https://helm.linkerd.io/stable
       version: 2.10.2
-    namespace: default
+    namespace: linkerd
 #   skipCreateNamespace: true
 #   wait: true
     values: 
       cniEnabled: true
+      identityTrustAnchorsPEM: |
+        -----BEGIN CERTIFICATE-----
+        MIIBjTCCATSgAwIBAgIRAJi0jzX/mem7Kxprwg/6jQEwCgYIKoZIzj0EAwIwJTEj
+        MCEGA1UEAxMacm9vdC5saW5rZXJkLmNsdXN0ZXIubG9jYWwwHhcNMjEwOTE0MjI1
+        MzU4WhcNMzEwOTEyMjI1MzU4WjAlMSMwIQYDVQQDExpyb290LmxpbmtlcmQuY2x1
+        c3Rlci5sb2NhbDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABAMVFNyeAXwMIX3a
+        ++ngk/WqbdPJgr1o1KRYQ3PBfwcxgbFIkzMmanhIKccWTSWDckgG6WRKMVR7D46E
+        qaNZdj6jRTBDMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEBMB0G
+        A1UdDgQWBBQlRvpCrWhKBKW+GwBDok6ETJIARjAKBggqhkjOPQQDAgNHADBEAiBG
+        d+EjmNNTkzqKNIbaOuqryeNpxtGDOn/dkvDvIUvdoQIgOCHCh065JQIjayzthSr8
+        Tsjprz7lZUscGpib4SGqiSQ=
+        -----END CERTIFICATE-----
+      identity:
+        issuer:
+          tls:
+            crtPEM: |
+              -----BEGIN CERTIFICATE-----
+              MIIBszCCAVmgAwIBAgIRAIAPIR5LFT2ZF6WqIWl1c/UwCgYIKoZIzj0EAwIwJTEj
+              MCEGA1UEAxMacm9vdC5saW5rZXJkLmNsdXN0ZXIubG9jYWwwHhcNMjEwOTE0MjI1
+              NDM0WhcNMzEwOTEyMjI1NDM0WjApMScwJQYDVQQDEx5pZGVudGl0eS5saW5rZXJk
+              LmNsdXN0ZXIubG9jYWwwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAR8WZcDIb01
+              Ulql765/LnkFzsA3hR1wgt8xZ4DXYHg0sebmmEWCZoDveIwTBkGpRw1gaCG3njSj
+              mDTWkK5Dqp1Io2YwZDAOBgNVHQ8BAf8EBAMCAQYwEgYDVR0TAQH/BAgwBgEB/wIB
+              ADAdBgNVHQ4EFgQUnnOzVote3UCw7trnwpFUjox1jy8wHwYDVR0jBBgwFoAUJUb6
+              Qq1oSgSlvhsAQ6JOhEySAEYwCgYIKoZIzj0EAwIDSAAwRQIgC157sXjG2xfmaEHl
+              X0y+2iKFPVFjJUECo8WwlWQpkQQCIQD7XY5Bd4kNMtnHlY3mVJESTITDzj4P8Kyy
+              VwOXGyKk9g==
+              -----END CERTIFICATE-----
+            keyPEM: |
+              -----BEGIN EC PRIVATE KEY-----
+              MHcCAQEEIIlwv/nIGgFP8AnfkI3hAlpVH8Tgaf+cpGQ1jiYVFyAEoAoGCCqGSM49
+              AwEHoUQDQgAEfFmXAyG9NVJape+ufy55Bc7AN4UdcILfMWeA12B4NLHm5phFgmaA
+              73iMEwZBqUcNYGght540o5g01pCuQ6qdSA==
+              -----END EC PRIVATE KEY-----
+          crtExpiry: "2031-09-12T19:54:58Z"
+      installNamespace: false
     set: []
     valuesFrom: []
   providerConfigRef:
@@ -56,15 +93,16 @@ spec:
       name: linkerd-viz
       repository: https://helm.linkerd.io/stable
       version: 2.10.2
-    namespace: default
+    namespace: linkerd-viz
 #   skipCreateNamespace: true
 #   wait: true
     values: 
+      installNamespace: false
       linkerdVersion: stable-2.10.2
-      prometheusUrl: "{{ .Values.environmentName }}-prometheus-s-prometheus"
-      grafanaUrl: "{{ .Values.environmentName }}-prometheus-stack-grafana"
+      prometheusUrl: "{{ .Values.environmentName }}-prometheus-s-prometheus:9090"
+      grafanaUrl: "{{ .Values.environmentName }}-prometheus-stack-grafana:3000"
       # Set this to `jaeger.linkerd-jaeger.svc.<clusterDomain>` if you plan to use jaeger extension
-      jaegerUrl: ""
+      jaegerUrl: "{{ .Values.environmentName }}-jaeger-jaeger-operator-jaeger-collector:9411"
       grafana:
         enabled: false
       prometheus:
