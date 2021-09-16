@@ -11,3 +11,28 @@ region: us-east-1
 
 monitoring:
   enabled: true
+
+# NOTE: "gp2" already exists by default
+ebs:
+- name: gp3
+  parameters:
+    type: gp3
+    csi.storage.k8s.io/fstype: ext4
+- name: high-iops-ssd
+  parameters:
+    type: io1
+    iopsPerGB: "50"
+    csi.storage.k8s.io/fstype: ext4
+- name: medium-iops-ssd
+  parameters:
+    type: io1
+    iopsPerGB: "25"
+    csi.storage.k8s.io/fstype: ext4
+- name: throughput
+  parameters:
+    type: st1
+    csi.storage.k8s.io/fstype: ext4
+- name: cold-storage
+  parameters:
+    type: sc1
+    csi.storage.k8s.io/fstype: ext4

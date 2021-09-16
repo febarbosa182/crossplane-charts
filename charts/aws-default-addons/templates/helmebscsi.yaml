@@ -26,51 +26,16 @@ spec:
           annotations: 
             eks.amazonaws.com/role-arn: "arn:aws:iam::{{ .Values.accountID }}:role/{{ include "aws-default-addons.fullname" . }}-ebs-csi"
       storageClasses:
-        - name: gp3
+      {{ range .Values.ebs }}
+        - name: {{ .name }}
           provisioner: ebs.csi.aws.com
+          {{ with .parameters }}
           parameters:
-            type: gp3
-            csi.storage.k8s.io/fstype: ext4
+          {{ toYaml . | nindent 12 }}
+          {{ end }}
           volumeBindingMode: WaitForFirstConsumer
           allowVolumeExpansion: true
-        #   GP2 already exists by default
-        # - name: gp2
-        #   provisioner: ebs.csi.aws.com
-        #   parameters:
-        #     type: gp2
-        #     csi.storage.k8s.io/fstype: ext4
-        #   volumeBindingMode: WaitForFirstConsumer
-          allowVolumeExpansion: true
-        - name: high-iops-ssd
-          provisioner: ebs.csi.aws.com
-          parameters:
-            type: io1
-            iopsPerGB: "50"
-            csi.storage.k8s.io/fstype: ext4
-          volumeBindingMode: WaitForFirstConsumer
-          allowVolumeExpansion: true
-        - name: medium-iops-ssd
-          provisioner: ebs.csi.aws.com
-          parameters:
-            type: io1
-            iopsPerGB: "25"
-            csi.storage.k8s.io/fstype: ext4
-          volumeBindingMode: WaitForFirstConsumer
-          allowVolumeExpansion: true
-        - name: throughput
-          provisioner: ebs.csi.aws.com
-          parameters:
-            type: st1
-            csi.storage.k8s.io/fstype: ext4
-          volumeBindingMode: WaitForFirstConsumer
-          allowVolumeExpansion: true
-        - name: cold-storage
-          provisioner: ebs.csi.aws.com
-          parameters:
-            type: sc1
-            csi.storage.k8s.io/fstype: ext4
-          volumeBindingMode: WaitForFirstConsumer
-          allowVolumeExpansion: true
+      {{ end }}
     set: []
     valuesFrom: []
   providerConfigRef:
