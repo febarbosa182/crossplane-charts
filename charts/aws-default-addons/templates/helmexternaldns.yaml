@@ -22,6 +22,8 @@ spec:
         eks.amazonaws.com/role-arn: "arn:aws:iam::{{ .Values.accountID }}:role/{{ include "aws-default-addons.fullname" . }}-external-dns"
       domainFilters: [ "{{ .Values.domain }}" ]
       txtOwnerId: "{{ .Values.environmentName }}"
+      serviceMonitor:
+        enabled: true
     set: []
     valuesFrom: []
   providerConfigRef:
