@@ -98,7 +98,6 @@ spec:
 #   wait: true
     values: 
       installNamespace: false
-      linkerdVersion: stable-2.10.2
       prometheusUrl: "{{ .Values.environmentName }}-prometheus-s-prometheus:9090"
       grafanaUrl: "{{ .Values.environmentName }}-prometheus-stack-grafana:3000"
       # Set this to `jaeger.linkerd-jaeger.svc.<clusterDomain>` if you plan to use jaeger extension

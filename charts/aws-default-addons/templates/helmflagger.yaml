@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "aws-default-addons.labels" . | nindent 4 }}
 spec:
-  rollbackLimit: 3
+  rollbackLimit: 99
   forProvider:
     chart:
       name: flagger

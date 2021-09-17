@@ -24,6 +24,64 @@ spec:
           apiVersion: "networking.k8s.io/v1"
           ingressClassName: nginx
           hostName: jenkins.{{ .Values.domain }}
+        installPlugins:
+        - kubernetes:1.30.1
+        - kubernetes-cli:1.10.3
+        - workflow-aggregator:2.6
+        - git:4.8.2
+        - configuration-as-code:1.52
+        - command-launcher:1.6
+        - docker-workflow:1.26
+        - job-dsl:1.77
+        - pipeline-utility-steps:2.8.0
+        - blueocean:1.24.8
+        - simple-theme-plugin:0.6
+        - prometheus:2.0.10
+        - aws-credentials:1.28
+        scriptApproval: []
+        JCasC:
+          defaultConfig: true
+          configScripts: 
+            welcome-message: |
+              jenkins:
+                systemMessage: Welcome to {{ .Values.environmentName }} CI\CD server.  This Jenkins is configured and managed 'as code'.
+            configuration: |-
+              unclassified:
+                globalLibraries:
+                  libraries:
+                    - name: "assembler"
+                      defaultVersion: "v0.3.0"
+                      retriever:
+                      modernSCM:
+                        scm:
+                        git:
+                          credentialsId: "github-access"
+                          remote: "git@github.com:ZupIT/pipeline-assembler.git"
+                    - name: "core"
+                      defaultVersion: "v0.3.0"
+                      retriever:
+                      modernSCM:
+                        scm:
+                        git:
+                          credentialsId: "github-access"
+                          remote: "git@github.com:ZupIT/pipeline-core.git"
+                simple-theme-plugin:
+                  elements:
+                    - cssUrl:
+                        url: "https://cdn.rawgit.com/afonsof/jenkins-material-theme/gh-pages/dist/material-cyan.css"  
+              credentials:
+                system:
+                  domainCredentials:
+                  - credentials:
+                    - basicSSHUserPrivateKey:
+                        id: "github-access"
+                        privateKeySource:
+                          directEntry:
+                            privateKey: "{AQAAABAAAAGwb8Bi74uCgtZXLy1tcecB4bMIlEfaGPTLtK655GfAcgvBFdEP2a1qqEYY4xhRmV2Gnla7qsct9ZEgu+kmxXCaWZOj+K6r0m3VjAob3XuS5m8TcOSM1SKaUEvv/Jb41fRKw4L3Ry+K9+avqNuxwwW40POvnFdwHX2S7Q0KPvQFc95mQL918LxIc3NzhNz0kWRepaJu9Hr9oHoFecGD7tBqQd0C/wDHbPZqFQBY4CvZl6SEb4y3oEt1L1ZxJVAKfTcyLzLek4pWO7LBzkiEg3lPKhUqk2SaOdJ1WndNeiaLvszbg6LVam/ez2h+x02dInDtQSPZaHsypBQosWvdVyVd24x9fXKZfDqFxf0fMQK9m7vwpHAJ+8CELDeaD6DVGE7mVtG1jRAc/FCbBnvnCoGk/skfarA0sk9MXyZ8HT3OWM3G6U0foS08sHfCosiyxv0aWO51Zv+Pstw6VImwwEhnYhID26G3IqJkliJ8RQpSErgu4a8qElfVjBaV5yVKw6Xt7JSsrESl6uUmUkY0Dpp+lTbjp49SH35gGB05bsyX7bsYtmBE3+GEb9HO14A4UkNjjY8AkQx6S8CjxwH5/3TiEg==}"
+                        scope: GLOBAL
+                        username: "icaroferreirazup"
+        prometheus:
+            enabled: true
       persistence:
         enabled: true
         storageClass: gp2
