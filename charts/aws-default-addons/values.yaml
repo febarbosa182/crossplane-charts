@@ -36,3 +36,13 @@ ebs:
   parameters:
     type: sc1
     csi.storage.k8s.io/fstype: ext4
+
+apiGateway:
+  tyk:
+    enabled: false
+  kong:
+    enabled: false
+  krakend:
+    enabled: false
+  glooEdge:
+    enabled: false
