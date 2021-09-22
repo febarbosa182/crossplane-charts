@@ -2,21 +2,30 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# -- default name used to compose components and environment name
 nameOverride: ""
+# -- default name used to compose components and environment name
 fullnameOverride: ""
 
+# -- content of creds file, see: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#cli-configure-files-where
 creds: |
   [default]
   aws_access_key_id=XXXXXXXXX
   aws_secret_access_key=XXXXXXXXXXXXXXXXXXXXXXXXXXX
 
+# -- region where the infrastructure will be created
 region: us-east-2
 
 vpc:
+  # -- CIDR block for VPC
   cidrBlock: 10.0.0.0/16
+  # -- enable DNS suppoprt
   enableDnsSupport: true
+  # -- enable DNS host suppoprt
   enableDnsHostNames: true
+  # -- intance tenancy
   instanceTenancy: default
+  # -- default tags for VPC
   tags: []
 
 subnet:
@@ -43,7 +52,7 @@ nodeGroup:
   instanceTypes:
   - t3a.large
   scalingConfig:
-    desiredSize: 1
+    desiredSize: 2
     maxSize: 3
     minSize: 1 
 

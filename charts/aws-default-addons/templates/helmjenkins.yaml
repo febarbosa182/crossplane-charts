@@ -16,11 +16,13 @@ spec:
 #   wait: true
     values:
       controller:
-        tag: "2.312-jdk11"
+        tag: "2.313-jdk11"
         adminUser: "admin"
         adminPassword: "admindemo"
         ingress:
-          enabled: false
+          enabled: true
+          annotations:
+            nginx.ingress.kubernetes.io/rewrite-target: /
           apiVersion: "networking.k8s.io/v1"
           ingressClassName: nginx
           hostName: jenkins.{{ .Values.domain }}
@@ -29,15 +31,15 @@ spec:
         - kubernetes-cli:1.10.3
         - workflow-aggregator:2.6
         - git:4.8.2
-        - configuration-as-code:1.52
+        - configuration-as-code:1.53
         - command-launcher:1.6
         - docker-workflow:1.26
         - job-dsl:1.77
-        - pipeline-utility-steps:2.8.0
-        - blueocean:1.24.8
-        - simple-theme-plugin:0.6
+        - pipeline-utility-steps:2.10.0
+        - blueocean:1.25.0
+        - simple-theme-plugin:0.7
         - prometheus:2.0.10
-        - aws-credentials:1.28
+        - aws-credentials:1.30
         scriptApproval: []
         JCasC:
           defaultConfig: true
@@ -52,23 +54,23 @@ spec:
                     - name: "assembler"
                       defaultVersion: "v0.3.0"
                       retriever:
-                      modernSCM:
-                        scm:
-                        git:
-                          credentialsId: "github-access"
-                          remote: "git@github.com:ZupIT/pipeline-assembler.git"
+                        modernSCM:
+                          scm:
+                            git:
+                              credentialsId: "github-access"
+                              remote: "git@github.com:ZupIT/pipeline-assembler.git"
                     - name: "core"
                       defaultVersion: "v0.3.0"
                       retriever:
-                      modernSCM:
-                        scm:
-                        git:
-                          credentialsId: "github-access"
-                          remote: "git@github.com:ZupIT/pipeline-core.git"
+                        modernSCM:
+                          scm:
+                            git:
+                              credentialsId: "github-access"
+                              remote: "git@github.com:ZupIT/pipeline-core.git"
                 simple-theme-plugin:
                   elements:
                     - cssUrl:
-                        url: "https://cdn.rawgit.com/afonsof/jenkins-material-theme/gh-pages/dist/material-cyan.css"  
+                        url: "https://cdn.rawgit.com/afonsof/jenkins-material-theme/gh-pages/dist/material-deep-orange.css"  
               credentials:
                 system:
                   domainCredentials:

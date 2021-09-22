@@ -15,8 +15,6 @@ spec:
 #   skipCreateNamespace: true
 #   wait: true
     values:
-      crd:
-        create: true
       meshProvider: linkerd
       metricsServer: http://{{ .Values.environmentName }}-prometheus-s-prometheus:9090
     set: []

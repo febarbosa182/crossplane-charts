@@ -55,7 +55,7 @@ Replace the environment variables by the path of your previously create credenti
 ```sh
 # This command use local aws chart stack
 helm upgrade --install $ENVIRONMENT_NAME ./charts/aws-k8s-stack \
-    --set-file creds=$e \
+    --set-file creds=$YOUR_CREDENTIALS_FILE_PATH \
     --set region=$REGION \
     --set fullnameOverride=$ENVIRONMENT_NAME \ 
     --set nameOverride=$ENVIRONMENT_NAME \
@@ -104,3 +104,17 @@ helm upgrade --install $ENVIRONMENT_NAME-addons ./charts/aws-default-addons \
     --set region=$REGION \
     --set domain=$DOMAIN
 ```
+
+Generated tools UI:
+```sh
+jaeger.$DOMAIN
+jenkins.$DOMAIN
+kubernetes-dashboard.$DOMAIN
+alertmanager.$DOMAIN
+prometheus.$DOMAIN
+grafana.$DOMAIN
+```
+
+For all generated tools these credentials for access:
+Username: admin
+Password: admindemo

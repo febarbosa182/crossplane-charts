@@ -10,7 +10,7 @@ spec:
     chart:
       name: kube-prometheus-stack
       repository: https://prometheus-community.github.io/helm-charts
-      version: 18.0.5
+      version: 18.0.12
     namespace: monitoring
 #   skipCreateNamespace: true
 #   wait: true
@@ -31,6 +31,49 @@ spec:
             kubernetes.io/ingress.class: nginx
           hosts:
           - grafana.{{ .Values.domain }}
+        datasources: 
+          datasources.yaml:
+            apiVersion: 1
+            datasources:
+            - name: Prometheus
+              type: prometheus
+              url: http://{{ .Values.environmentName }}-prometheus-s-prometheus:9090
+              access: proxy
+              isDefault: true
+        dashboardProviders:
+          dashboardproviders.yaml:
+            apiVersion: 1
+            providers:
+            - name: 'default'
+              orgId: 1
+              folder: ''
+              type: file
+              disableDeletion: false
+              editable: true
+              options:
+                path: /var/lib/grafana/dashboards/default
+        dashboards: 
+          default:
+            jenkins:
+              gnetId: 9964
+              revision: 1
+              datasource: Prometheus
+            nginx-ingress:
+              gnetId: 12575
+              revision: 2
+              datasource: Prometheus
+            cluster-monitoring:
+              gnetId: 10000
+              revision: 1
+              datasource: Prometheus
+            linkerd-deployment:
+              gnetId: 14264
+              revision: 1
+              datasource: Prometheus
+            linkerd-top-line:
+              gnetId: 14276
+              revision: 1
+              datasource: Prometheus
       prometheus:
         thanosIngress:
           enabled: true

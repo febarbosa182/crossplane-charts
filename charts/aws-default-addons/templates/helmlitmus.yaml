@@ -10,7 +10,7 @@ spec:
     chart:
       name: litmus
       repository: https://litmuschaos.github.io/litmus-helm/
-      version: 3.5.17
+      version: 2.1.1
     namespace: litmus
 #   skipCreateNamespace: true
 #   wait: true
@@ -26,6 +26,12 @@ spec:
           paths:
             frontend: /(.*)
             backend: /backend/(.*)
+      portal:
+        server:
+          authServer:
+            env:
+              ADMIN_USERNAME: "admin"
+              ADMIN_PASSWORD: "admindemo"
     set: []
     valuesFrom: []
   providerConfigRef:
