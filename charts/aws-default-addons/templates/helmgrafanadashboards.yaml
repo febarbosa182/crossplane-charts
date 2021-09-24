@@ -1,0 +1,139 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-grafana-jenkins
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: configmap
+      repository: https://ameijer.github.io/k8s-as-helm/
+      version: 1.0.3
+    namespace: monitoring
+#   skipCreateNamespace: true
+#   wait: true
+    values: 
+      labels:
+        grafana_dashboard: "3"
+      annotations:
+          k8s-sidecar-target-directory: "/tmp/dashboards/jenkins"
+      configmapData:
+        jenkins-performance-and-health-overview_rev1.json: {{ (.Files.Glob "./files/jenkins-performance-and-health-overview_rev1.json").AsConfig }}
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-grafana-kubernetes
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: configmap
+      repository: https://ameijer.github.io/k8s-as-helm/
+      version: 1.0.3
+    namespace: monitoring
+#   skipCreateNamespace: true
+#   wait: true
+    values: 
+      labels:
+        grafana_dashboard: "2"
+      annotations:
+        k8s-sidecar-target-directory: "/tmp/dashboards/cluster"
+      configmapData:
+        kubernetes-ingress-controller-dashboard_rev2.json: {{ (.Files.Glob "./files/kubernetes-ingress-controller-dashboard_rev2.json").AsConfig }}
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-grafana-nginx
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: configmap
+      repository: https://ameijer.github.io/k8s-as-helm/
+      version: 1.0.3
+    namespace: monitoring
+#   skipCreateNamespace: true
+#   wait: true
+    values: 
+      labels:
+        grafana_dashboard: "4"
+      annotations:
+        k8s-sidecar-target-directory: "/tmp/dashboards/nginx"
+      configmapData:
+        kubernetes-ingress-controller-dashboard_rev2.json: {{ (.Files.Glob "./files/kubernetes-ingress-controller-dashboard_rev2.json").AsConfig }}
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-grafana-linkerd-deployment
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: configmap
+      repository: https://ameijer.github.io/k8s-as-helm/
+      version: 1.0.3
+    namespace: monitoring
+#   skipCreateNamespace: true
+#   wait: true
+    values: 
+      labels:
+        grafana_dashboard: "5"
+      annotations:
+          k8s-sidecar-target-directory: "/tmp/dashboards/linkerd"
+      configmapData:
+        kubernetes-ingress-controller-dashboard_rev2.json: {{ (.Files.Glob "./files/kubernetes-ingress-controller-dashboard_rev2.json").AsConfig }}
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-grafana-linkerd-top-line
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: configmap
+      repository: https://ameijer.github.io/k8s-as-helm/
+      version: 1.0.3
+    namespace: monitoring
+#   skipCreateNamespace: true
+#   wait: true
+    values: 
+      labels:
+        grafana_dashboard: "6"
+      annotations:
+          k8s-sidecar-target-directory: "/tmp/dashboards/linkerd"
+      configmapData:
+        linkerd-top-line_rev1.json: {{ (.Files.Glob "./files/linkerd-top-line_rev1.json").AsConfig }}
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
