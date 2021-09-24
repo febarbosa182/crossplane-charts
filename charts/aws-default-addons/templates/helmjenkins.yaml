@@ -48,6 +48,32 @@ spec:
               jenkins:
                 systemMessage: Welcome to {{ .Values.environmentName }} CI\CD server.  This Jenkins is configured and managed 'as code'.
             configuration: |-
+              jobs:
+                - script: >
+                    pipelineJob('app-sample') {
+                      definition {
+                        cps {
+                          script("""\
+                            @Library (['core','assembler']) _
+                            properties([
+                                parameters(
+                                    [ string(name: 'REPO_BRANCH', defaultValue: 'main', description: 'git repository branch') ]
+                                )
+                            ])
+                            params.each { k, v -> env[k] = v }
+                            env.REPO_URL = "https://github.com/njguilhem2/crud-java.git"
+                            env.TECH_TYPE= "java"
+                            env.KUBE_NAMESPACE = "default"
+                            env.HELM_RELEASE_NAME = "pipeline-simple-app"
+                            env.HELM_CHART_NAME = "chart"
+                            env.DOCKER_IMAGE = "febarbosa182/pipeline-simple-app"
+                            env.CI_IMAGE = "openjdk:17-jdk"
+                            
+                            coreLibrary{}
+                          """.stripIndent())
+                        }
+                      }
+                    }
               unclassified:
                 globalLibraries:
                   libraries:
