@@ -7,7 +7,7 @@ nameOverride: ""
 # -- default name used to compose components and environment name
 fullnameOverride: ""
 
-# -- content of creds file, see: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#cli-configure-files-where
+# -- content of creds file, for more information [access here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#cli-configure-files-where)
 creds: |
   [default]
   aws_access_key_id=XXXXXXXXX
@@ -29,6 +29,7 @@ vpc:
   tags: []
 
 subnet:
+  # -- list of az with "name" and "cidrBlock" 
   az: 
   - name: "a"
     cidrBlock: 10.0.0.0/24
@@ -36,9 +37,11 @@ subnet:
     cidrBlock: 10.0.1.0/24
   - name: "c"
     cidrBlock: 10.0.2.0/24
+  # -- map public IP on launch
   mapPublicIPOnLaunch: true
 
 eks:
+  # -- EKS version, for more information [access here](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html)
   version: "1.21"
   resourcesVpcConfig:
     endpointPrivateAccess: true
@@ -48,6 +51,7 @@ eks:
     types: ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
 nodeGroup:
+  # -- EKS Node Group version, for more information [access here](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html)
   version: "1.21"
   instanceTypes:
   - t3a.large

@@ -4,11 +4,21 @@
 
 A Helm chart for simple public infrastructure with EKS
 
+**Homepage:** <https://github.com/febarbosa182/poc-automated-infrastructure/tree/main/charts/aws-k8s-stack>
+
+## Source Code
+
+* <https://github.com/febarbosa182/poc-automated-infrastructure/tree/main/charts/aws-k8s-stack>
+
+## Requirements
+
+Kubernetes: `>=1.18`
+
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| creds | string | `"[default]\naws_access_key_id=XXXXXXXXX\naws_secret_access_key=XXXXXXXXXXXXXXXXXXXXXXXXXXX\n"` | content of creds file, see: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#cli-configure-files-where |
+| creds | string | `"[default]\naws_access_key_id=XXXXXXXXX\naws_secret_access_key=XXXXXXXXXXXXXXXXXXXXXXXXXXX\n"` | content of creds file, for more information [access here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#cli-configure-files-where) |
 | eks.clusterLogging[0].enabled | bool | `false` |  |
 | eks.clusterLogging[0].types[0] | string | `"api"` |  |
 | eks.clusterLogging[0].types[1] | string | `"audit"` |  |
@@ -17,24 +27,19 @@ A Helm chart for simple public infrastructure with EKS
 | eks.clusterLogging[0].types[4] | string | `"scheduler"` |  |
 | eks.resourcesVpcConfig.endpointPrivateAccess | bool | `true` |  |
 | eks.resourcesVpcConfig.endpointPublicAccess | bool | `true` |  |
-| eks.version | string | `"1.21"` |  |
+| eks.version | string | `"1.21"` | EKS version, for more information [access here](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html) |
 | fullnameOverride | string | `""` | default name used to compose components and environment name |
 | nameOverride | string | `""` | default name used to compose components and environment name |
 | nodeGroup.instanceTypes[0] | string | `"t3a.large"` |  |
 | nodeGroup.scalingConfig.desiredSize | int | `2` |  |
 | nodeGroup.scalingConfig.maxSize | int | `3` |  |
 | nodeGroup.scalingConfig.minSize | int | `1` |  |
-| nodeGroup.version | string | `"1.21"` |  |
+| nodeGroup.version | string | `"1.21"` | EKS Node Group version, for more information [access here](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html) |
 | region | string | `"us-east-2"` | region where the infrastructure will be created |
 | route53.domain | string | `"test.domain.com"` |  |
 | route53.enabled | bool | `false` |  |
-| subnet.az[0].cidrBlock | string | `"10.0.0.0/24"` |  |
-| subnet.az[0].name | string | `"a"` |  |
-| subnet.az[1].cidrBlock | string | `"10.0.1.0/24"` |  |
-| subnet.az[1].name | string | `"b"` |  |
-| subnet.az[2].cidrBlock | string | `"10.0.2.0/24"` |  |
-| subnet.az[2].name | string | `"c"` |  |
-| subnet.mapPublicIPOnLaunch | bool | `true` |  |
+| subnet.az | list | `[{"cidrBlock":"10.0.0.0/24","name":"a"},{"cidrBlock":"10.0.1.0/24","name":"b"},{"cidrBlock":"10.0.2.0/24","name":"c"}]` | list of az with "name" and "cidrBlock"  |
+| subnet.mapPublicIPOnLaunch | bool | `true` | map public IP on launch |
 | vpc.cidrBlock | string | `"10.0.0.0/16"` | CIDR block for VPC |
 | vpc.enableDnsHostNames | bool | `true` | enable DNS host suppoprt |
 | vpc.enableDnsSupport | bool | `true` | enable DNS suppoprt |
