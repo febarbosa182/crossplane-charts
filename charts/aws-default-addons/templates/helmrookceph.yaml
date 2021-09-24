@@ -1,6 +1,29 @@
 apiVersion: helm.crossplane.io/v1beta1
 kind: Release
 metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-rook-operator
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: rook-ceph
+      repository: https://charts.rook.io/release
+      version: v1.7.4
+    namespace: rook-ceph
+#   skipCreateNamespace: true
+#   wait: true
+    values: {}
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
+
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
   name: {{ include "aws-default-addons.fullname" . }}-rook
   labels:
     {{- include "aws-default-addons.labels" . | nindent 4 }}
@@ -10,7 +33,7 @@ spec:
     chart:
       name: rook-ceph-cluster
       repository: https://charts.rook.io/release
-      version: v1.7.3
+      version: v1.7.4
     namespace: rook-ceph
 #   skipCreateNamespace: true
 #   wait: true

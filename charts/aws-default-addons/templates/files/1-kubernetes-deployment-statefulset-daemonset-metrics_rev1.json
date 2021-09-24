@@ -798,7 +798,7 @@
           "expr": "(sum(kube_deployment_status_replicas{deployment=~\".*$Deployment$Statefulset$Daemonset\"}) or vector(0)) + (sum(kube_statefulset_replicas{statefulset=~\".*$Deployment$Statefulset$Daemonset\"}) or vector(0)) + (sum(kube_daemonset_status_desired_number_scheduled{daemonset=~\".*$Deployment$Statefulset$Daemonset\"}) or vector(0))",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{ $Daemonset }}",
+          "legendFormat": "{{`{{ $Daemonset }}`}}",
           "refId": "A",
           "step": 1800
         }
@@ -875,7 +875,7 @@
           "hide": false,
           "interval": "10s",
           "intervalFactor": 1,
-          "legendFormat": "real: {{ kubernetes_io_hostname }} | {{ pod_name }} ",
+          "legendFormat": "real: {{`{{ kubernetes_io_hostname }}`}} | {{`{{ pod_name }}`}} ",
           "metric": "container_cpu",
           "refId": "A",
           "step": 60
@@ -885,7 +885,7 @@
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
-          "legendFormat": "rqst: {{ node }} | {{ pod }}",
+          "legendFormat": "rqst: {{`{{ node }}`}} | {{`{{ pod }}`}}",
           "refId": "B",
           "step": 120
         },
@@ -894,7 +894,7 @@
           "format": "time_series",
           "hide": true,
           "intervalFactor": 2,
-          "legendFormat": "avlbl: {{ node }}",
+          "legendFormat": "avlbl: {{`{{ node }}`}}",
           "refId": "C",
           "step": 30
         }
@@ -996,7 +996,7 @@
           "hide": false,
           "interval": "10s",
           "intervalFactor": 1,
-          "legendFormat": "real: {{kubernetes_io_hostname }} | {{ pod_name }}",
+          "legendFormat": "real: {{`{{kubernetes_io_hostname }}`}} | {{`{{ pod_name }}`}}",
           "metric": "container_memory_usage:sort_desc",
           "refId": "A",
           "step": 60
@@ -1005,7 +1005,7 @@
           "expr": "sum ((kube_pod_container_resource_requests_memory_bytes{pod=~\"^$Deployment$Statefulset$Daemonset.*$\",node=~\"^$Node$\"})) by (pod,node)",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "rqst: {{ node }} | {{ pod }}",
+          "legendFormat": "rqst: {{`{{ node }}`}} | {{`{{ pod }}`}}",
           "refId": "B",
           "step": 120
         },
@@ -1014,7 +1014,7 @@
           "format": "time_series",
           "hide": true,
           "intervalFactor": 2,
-          "legendFormat": "avlbl: {{ node }}",
+          "legendFormat": "avlbl: {{`{{ node }}`}}",
           "refId": "C",
           "step": 30
         }
@@ -1104,7 +1104,7 @@
           "expr": "100 * (kubelet_volume_stats_used_bytes{kubernetes_io_hostname=~\"^$Node$\", persistentvolumeclaim=~\".*$Deployment$Statefulset$Daemonset.*$\"} / kubelet_volume_stats_capacity_bytes{kubernetes_io_hostname=~\"^$Node$\", persistentvolumeclaim=~\".*$Deployment$Statefulset$Daemonset.*$\"})",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{ persistentvolumeclaim }} | {{ kubernetes_io_hostname }}",
+          "legendFormat": "{{`{{ persistentvolumeclaim }}`}} | {{`{{ kubernetes_io_hostname }}`}}",
           "refId": "A",
           "step": 120
         }
@@ -1199,7 +1199,7 @@
           "format": "time_series",
           "interval": "10s",
           "intervalFactor": 1,
-          "legendFormat": "-> {{ kubernetes_io_hostname }} | {{ pod_name }}",
+          "legendFormat": "-> {{`{{ kubernetes_io_hostname }}`}} | {{`{{ pod_name }}`}}",
           "metric": "network",
           "refId": "A",
           "step": 60
@@ -1209,7 +1209,7 @@
           "format": "time_series",
           "interval": "10s",
           "intervalFactor": 1,
-          "legendFormat": "<- {{ kubernetes_io_hostname }} | {{ pod_name }}",
+          "legendFormat": "<- {{`{{ kubernetes_io_hostname }}`}} | {{`{{ pod_name }}`}}",
           "metric": "network",
           "refId": "B",
           "step": 60

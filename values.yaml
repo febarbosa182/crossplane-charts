@@ -1,0 +1,7 @@
+serviceAccount:
+  annotations: 
+    eks.amazonaws.com/role-arn: "arn:aws:iam::450377644710:role/aws-orange-stack-external-dns"
+podAnnotations:
+  eks.amazonaws.com/role-arn: "arn:aws:iam::450377644710:role/aws-orange-stack-external-dns"
+domainFilters: [ "melgar.link" ]
+txtOwnerId: "aws-orange-stack"

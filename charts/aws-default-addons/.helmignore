@@ -22,4 +22,4 @@
 *.tmproj
 .vscode/
 # Extra files
-files/
+# files/
