@@ -113,8 +113,11 @@ kubernetes-dashboard.$DOMAIN
 alertmanager.$DOMAIN
 prometheus.$DOMAIN
 grafana.$DOMAIN
+litmus.$DOMAIN
 ```
 
 For all generated tools these credentials for access:
+<br>
 Username: admin
+<br>
 Password: admindemo

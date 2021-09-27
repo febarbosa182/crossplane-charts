@@ -4,6 +4,5 @@ description: A Helm chart for simple public infrastructure with EKS
 type: application
 version: 0.1.0
 appVersion: "0.1.0"
-kubeVersion: ">=1.18"
 home: "https://github.com/febarbosa182/poc-automated-infrastructure/tree/main/charts/aws-k8s-stack"
 sources: ["https://github.com/febarbosa182/poc-automated-infrastructure/tree/main/charts/aws-k8s-stack"]

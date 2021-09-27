@@ -64,10 +64,11 @@ spec:
                             env.REPO_URL = "https://github.com/njguilhem2/crud-java.git"
                             env.TECH_TYPE= "java"
                             env.KUBE_NAMESPACE = "default"
-                            env.HELM_RELEASE_NAME = "pipeline-simple-app"
+                            env.HELM_RELEASE_NAME = "crud-java"
                             env.HELM_CHART_NAME = "chart"
-                            env.DOCKER_IMAGE = "febarbosa182/pipeline-simple-app"
-                            env.CI_IMAGE = "openjdk:17-jdk"
+                            env.DOCKER_IMAGE = "crud-java"
+                            env.CI_IMAGE = "gradle:7.2.0-jdk11"
+                            
                             
                             coreLibrary{}
                           """.stripIndent())
@@ -78,36 +79,23 @@ spec:
                 globalLibraries:
                   libraries:
                     - name: "assembler"
-                      defaultVersion: "v0.3.0"
+                      defaultVersion: "orange"
                       retriever:
                         modernSCM:
                           scm:
                             git:
-                              credentialsId: "github-access"
-                              remote: "git@github.com:ZupIT/pipeline-assembler.git"
+                              remote: "https://github.com/febarbosa182/pipeline-assembler.git"
                     - name: "core"
-                      defaultVersion: "v0.3.0"
+                      defaultVersion: "orange"
                       retriever:
                         modernSCM:
                           scm:
                             git:
-                              credentialsId: "github-access"
-                              remote: "git@github.com:ZupIT/pipeline-core.git"
+                              remote: "https://github.com/febarbosa182/pipeline-core.git"
                 simple-theme-plugin:
                   elements:
                     - cssUrl:
                         url: "https://cdn.rawgit.com/afonsof/jenkins-material-theme/gh-pages/dist/material-deep-orange.css"  
-              credentials:
-                system:
-                  domainCredentials:
-                  - credentials:
-                    - basicSSHUserPrivateKey:
-                        id: "github-access"
-                        privateKeySource:
-                          directEntry:
-                            privateKey: "{AQAAABAAAAGwb8Bi74uCgtZXLy1tcecB4bMIlEfaGPTLtK655GfAcgvBFdEP2a1qqEYY4xhRmV2Gnla7qsct9ZEgu+kmxXCaWZOj+K6r0m3VjAob3XuS5m8TcOSM1SKaUEvv/Jb41fRKw4L3Ry+K9+avqNuxwwW40POvnFdwHX2S7Q0KPvQFc95mQL918LxIc3NzhNz0kWRepaJu9Hr9oHoFecGD7tBqQd0C/wDHbPZqFQBY4CvZl6SEb4y3oEt1L1ZxJVAKfTcyLzLek4pWO7LBzkiEg3lPKhUqk2SaOdJ1WndNeiaLvszbg6LVam/ez2h+x02dInDtQSPZaHsypBQosWvdVyVd24x9fXKZfDqFxf0fMQK9m7vwpHAJ+8CELDeaD6DVGE7mVtG1jRAc/FCbBnvnCoGk/skfarA0sk9MXyZ8HT3OWM3G6U0foS08sHfCosiyxv0aWO51Zv+Pstw6VImwwEhnYhID26G3IqJkliJ8RQpSErgu4a8qElfVjBaV5yVKw6Xt7JSsrESl6uUmUkY0Dpp+lTbjp49SH35gGB05bsyX7bsYtmBE3+GEb9HO14A4UkNjjY8AkQx6S8CjxwH5/3TiEg==}"
-                        scope: GLOBAL
-                        username: "icaroferreirazup"
         prometheus:
             enabled: true
       persistence:
