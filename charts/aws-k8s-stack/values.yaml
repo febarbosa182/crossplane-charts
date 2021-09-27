@@ -10,8 +10,8 @@ fullnameOverride: ""
 # -- content of creds file, for more information [access here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#cli-configure-files-where)
 creds: |
   [default]
-  aws_access_key_id=XXXXXXXXX
-  aws_secret_access_key=XXXXXXXXXXXXXXXXXXXXXXXXXXX
+  aws_access_key_id=AKIAWRXEZPKTNYETNQF2
+  aws_secret_access_key=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
 
 # -- region where the infrastructure will be created
 region: us-east-2
