@@ -19,7 +19,6 @@ spec:
     valuesFrom: []
   providerConfigRef:
     name: {{ include "aws-default-addons.fullname" . }}
-
 ---
 apiVersion: helm.crossplane.io/v1beta1
 kind: Release
