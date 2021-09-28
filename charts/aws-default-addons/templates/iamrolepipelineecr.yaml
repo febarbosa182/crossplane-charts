@@ -14,7 +14,7 @@ spec:
           {
             "Effect": "Allow",
             "Principal": {
-              "AWS": "arn:aws:iam::{{ .Values.accountID }}:role/*"
+              "AWS": "arn:aws:iam::{{ .Values.accountID }}:role/{{ .Values.environmentName }}-node"
             },
             "Action": "sts:AssumeRole"
           }

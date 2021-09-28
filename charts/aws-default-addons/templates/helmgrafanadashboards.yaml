@@ -21,7 +21,7 @@ spec:
           k8s-sidecar-target-directory: "/tmp/dashboards/jenkins"
       configmapData:
         jenkins-performance-and-health-overview_rev1.json: |-
-          {{ (.Files.Glob "files/jenkins-performance-and-health-overview_rev1.txt").AsConfig | nindent 10 }}
+          {{ (.Files.Glob "files/jenkins-performance-and-health-overview_rev1.json").AsConfig | nindent 10 }}
     set: []
     valuesFrom: []
   providerConfigRef:
@@ -80,7 +80,8 @@ spec:
       annotations:
         k8s-sidecar-target-directory: "/tmp/dashboards/nginx"
       configmapData:
-        kubernetes-ingress-controller-dashboard_rev2.json: {{ (.Files.Glob "./files/kubernetes-ingress-controller-dashboard_rev2.json").AsConfig }}
+        kubernetes-ingress-controller-dashboard_rev2.json: |-
+         {{ (.Files.Glob "./files/kubernetes-ingress-controller-dashboard_rev2.json").AsConfig }}
     set: []
     valuesFrom: []
   providerConfigRef:
@@ -108,7 +109,8 @@ spec:
       annotations:
           k8s-sidecar-target-directory: "/tmp/dashboards/linkerd"
       configmapData:
-        kubernetes-ingress-controller-dashboard_rev2.json: {{ (.Files.Glob "./files/kubernetes-ingress-controller-dashboard_rev2.json").AsConfig }}
+        kubernetes-ingress-controller-dashboard_rev2.json: |-
+          {{ (.Files.Glob "./files/kubernetes-ingress-controller-dashboard_rev2.json").AsConfig }}
     set: []
     valuesFrom: []
   providerConfigRef:
@@ -136,7 +138,8 @@ spec:
       annotations:
           k8s-sidecar-target-directory: "/tmp/dashboards/linkerd"
       configmapData:
-        linkerd-top-line_rev1.json: {{ .Files.Get "./files/linkerd-top-line_rev1.json" }}
+        linkerd-top-line_rev1.json: |-
+          {{ .Files.Get "./files/linkerd-top-line_rev1.json" }}
     set: []
     valuesFrom: []
   providerConfigRef:
