@@ -1,0 +1,15 @@
+apiVersion: identity.aws.crossplane.io/v1beta1
+kind: IAMRolePolicyAttachment
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-pipeline-ecr
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    policyArnRef:
+      name: {{ include "aws-default-addons.fullname" . }}-pipeline-ecr
+    roleNameRef:
+      name: {{ include "aws-default-addons.fullname" . }}-pipeline-ecr
+  deletionPolicy: Delete
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}

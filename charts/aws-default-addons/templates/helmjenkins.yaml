@@ -19,6 +19,11 @@ spec:
         tag: "2.313-jdk11"
         adminUser: "admin"
         adminPassword: "admindemo"
+        containerEnv:
+        - name: AWS_REGION
+          value: "{{ .Values.region }}"
+        - name: ECR_ROLE
+          value: "{{ include "aws-default-addons.fullname" . }}-pipeline-ecr"
         ingress:
           enabled: true
           annotations:

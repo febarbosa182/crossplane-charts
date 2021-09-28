@@ -1,0 +1,25 @@
+apiVersion: identity.aws.crossplane.io/v1beta1
+kind: IAMRole
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-pipeline-ecr
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  forProvider:
+    description: "IAM Role para permitir o cluster {{ include "aws-default-addons.fullname" . }} acessar os recursos de ECR"
+    assumeRolePolicyDocument: |
+      {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Principal": {
+              "AWS": "arn:aws:iam::{{ .Values.accountID }}:role/*"
+            },
+            "Action": "sts:AssumeRole"
+          }
+        ]
+      }
+  deletionPolicy: Delete
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
