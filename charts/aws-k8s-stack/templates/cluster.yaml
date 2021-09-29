@@ -16,8 +16,8 @@ spec:
       {{- range .Values.subnet.az }}
       - name: "{{ $baseName }}-{{ .name }}"
       {{- end }}
-      securityGroupIdRefs:
-        - name: {{ include "aws-k8s-stack.fullname" . }}-sg
+      # securityGroupIdRefs:
+      #   - name: {{ include "aws-k8s-stack.fullname" . }}-sg
     version: {{ .Values.eks.version | quote  }}
     logging:
       clusterLogging:

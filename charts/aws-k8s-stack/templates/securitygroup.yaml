@@ -1,3 +1,4 @@
+{{ if .Values.securityGroup.enabled }}
 apiVersion: ec2.aws.crossplane.io/v1beta1
 kind: SecurityGroup
 metadata:
@@ -27,3 +28,4 @@ spec:
             description: all ips
   providerConfigRef:
     name: {{ include "aws-k8s-stack.fullname" . }}
+{{ end }}

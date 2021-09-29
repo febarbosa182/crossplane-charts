@@ -64,3 +64,5 @@ route53:
   enabled: false
   domain: test.domain.com
 
+securityGroup:
+  enabled: false
