@@ -114,6 +114,7 @@ alertmanager.$DOMAIN
 prometheus.$DOMAIN
 grafana.$DOMAIN
 litmus.$DOMAIN
+ceph-dashboard.$DOMAIN
 ```
 
 For all generated tools these credentials for access:

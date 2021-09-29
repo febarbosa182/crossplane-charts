@@ -16,7 +16,7 @@ spec:
 #   wait: true
     values:
       controller:
-        tag: "2.313-jdk11"
+        tag: "2.314-jdk11"
         adminUser: "admin"
         adminPassword: "admindemo"
         containerEnv:
@@ -45,7 +45,6 @@ spec:
         - simple-theme-plugin:0.7
         - prometheus:2.0.10
         - aws-credentials:1.30
-        - startup-trigger-plugin:2.9.3
         scriptApproval: []
         JCasC:
           defaultConfig: true
