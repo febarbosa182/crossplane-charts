@@ -16,7 +16,7 @@ spec:
 #   wait: true
     values:
       meshProvider: linkerd
-      metricsServer: http://{{ .Values.environmentName }}-prometheus-s-prometheus:9090
+      metricsServer: http://{{ .Values.environmentName }}-prometheus-s-prometheus.monitoring.svc:9090
     set: []
     valuesFrom: []
   providerConfigRef:

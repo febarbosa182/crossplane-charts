@@ -98,10 +98,10 @@ spec:
 #   wait: true
     values: 
       installNamespace: false
-      prometheusUrl: "http://{{ .Values.environmentName }}-prometheus-s-prometheus:9090"
-      grafanaUrl: "http://{{ .Values.environmentName }}-prometheus-stack-grafana:3000"
+      prometheusUrl: "http://{{ .Values.environmentName }}-prometheus-s-prometheus.monitoring.svc:9090"
+      grafanaUrl: "http://{{ .Values.environmentName }}-prometheus-stack-grafana.monitoring.svc:3000"
       # Set this to `jaeger.linkerd-jaeger.svc.<clusterDomain>` if you plan to use jaeger extension
-      jaegerUrl: "http://{{ .Values.environmentName }}-jaeger-jaeger-operator-jaeger-collector:9411"
+      jaegerUrl: "http://{{ .Values.environmentName }}-jaeger-jaeger-operator-jaeger-collector.jaeger.svc:9411"
       grafana:
         enabled: false
       prometheus:
