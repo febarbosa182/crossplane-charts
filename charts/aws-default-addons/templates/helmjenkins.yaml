@@ -46,6 +46,15 @@ spec:
         - prometheus:2.0.10
         - aws-credentials:1.30
         scriptApproval: []
+        initScripts: 
+          - |
+            print 'Aproove all scripts'
+            import org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval
+
+            ScriptApproval scriptApproval = ScriptApproval.get()
+            scriptApproval.pendingScripts.each {
+                scriptApproval.approveScript(it.hash)
+            }
         JCasC:
           defaultConfig: true
           configScripts: 
@@ -73,7 +82,7 @@ spec:
                             env.HELM_CHART_NAME = "chart"
                             env.DOCKER_IMAGE = "crud-java"
                             env.CI_IMAGE = "gradle:7.2.0-jdk11"
-                            
+                            env.DOMAIN =  "{{ .Values.domain }}"
                             
                             coreLibrary{}
                           """.stripIndent())

@@ -10,7 +10,7 @@ spec:
     chart:
       name: linkerd2-cni
       repository: https://helm.linkerd.io/stable
-      version: 2.10.2
+      version: 2.11.0
     namespace: linkerd-cni
 #   skipCreateNamespace: true
 #   wait: true
@@ -33,7 +33,7 @@ spec:
     chart:
       name: linkerd2
       repository: https://helm.linkerd.io/stable
-      version: 2.10.2
+      version: 2.11.0
     namespace: linkerd
 #   skipCreateNamespace: true
 #   wait: true
@@ -92,20 +92,61 @@ spec:
     chart:
       name: linkerd-viz
       repository: https://helm.linkerd.io/stable
-      version: 2.10.2
+      version: 2.11.0
     namespace: linkerd-viz
 #   skipCreateNamespace: true
 #   wait: true
     values: 
       installNamespace: false
-      prometheusUrl: "{{ .Values.environmentName }}-prometheus-s-prometheus:9090"
-      grafanaUrl: "{{ .Values.environmentName }}-prometheus-stack-grafana:3000"
+      prometheusUrl: "http://{{ .Values.environmentName }}-prometheus-s-prometheus:9090"
+      grafanaUrl: "http://{{ .Values.environmentName }}-prometheus-stack-grafana:3000"
       # Set this to `jaeger.linkerd-jaeger.svc.<clusterDomain>` if you plan to use jaeger extension
-      jaegerUrl: "{{ .Values.environmentName }}-jaeger-jaeger-operator-jaeger-collector:9411"
+      jaegerUrl: "http://{{ .Values.environmentName }}-jaeger-jaeger-operator-jaeger-collector:9411"
       grafana:
         enabled: false
       prometheus:
         enabled: false
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-linkerd-dash-ingress
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: ingress
+      repository: https://ameijer.github.io/k8s-as-helm/
+      version: 1.0.2
+    namespace: linkerd-viz
+#   skipCreateNamespace: true
+#   wait: true
+    values: 
+      apiVersion: networking.k8s.io/v1
+      nameOverride: web-ingress
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        nginx.ingress.kubernetes.io/upstream-vhost: $service_name.$namespace.svc.cluster.local:8084
+        nginx.ingress.kubernetes.io/configuration-snippet: |
+          proxy_set_header Origin "";
+          proxy_hide_header l5d-remote-ip;
+          proxy_hide_header l5d-server-id;
+      hosts:
+      - url: linkerd.{{ .Values.domain }}
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: web
+              port:
+                number: 8084
     set: []
     valuesFrom: []
   providerConfigRef:
