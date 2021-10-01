@@ -115,6 +115,7 @@ prometheus.$DOMAIN
 grafana.$DOMAIN
 litmus.$DOMAIN
 ceph-dashboard.$DOMAIN
+linkerd.$DOMAIN
 ```
 
 For all generated tools these credentials for access:

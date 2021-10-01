@@ -112,6 +112,9 @@ spec:
                         url: "https://cdn.rawgit.com/afonsof/jenkins-material-theme/gh-pages/dist/material-deep-orange.css"  
         prometheus:
             enabled: true
+      serviceAccount:
+        create: true
+        name: jenkins
       persistence:
         enabled: true
         storageClass: gp2
