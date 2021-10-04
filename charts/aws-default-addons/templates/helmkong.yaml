@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "aws-default-addons.labels" . | nindent 4 }}
 spec:
-  rollbackLimit: 99
+  rollbackLimit: 3
   forProvider:
     chart:
       name: tyk-headless
