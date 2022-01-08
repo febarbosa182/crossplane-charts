@@ -1,5 +1,5 @@
-apiVersion: identity.aws.crossplane.io/v1beta1
-kind: IAMRolePolicyAttachment
+apiVersion: iam.aws.crossplane.io/v1beta1
+kind: RolePolicyAttachment
 metadata:
   name: {{ include "aws-default-addons.fullname" . }}-ebs-csi
   labels:

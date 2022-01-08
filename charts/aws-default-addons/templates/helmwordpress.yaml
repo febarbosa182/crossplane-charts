@@ -1,0 +1,28 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: {{ include "aws-default-addons.fullname" . }}-wordpress
+  labels:
+    {{- include "aws-default-addons.labels" . | nindent 4 }}
+spec:
+  rollbackLimit: 3
+  forProvider:
+    chart:
+      name: wordpress
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.3.0
+    namespace: default
+#   skipCreateNamespace: true
+#   wait: true
+    values:
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        hostname: wordpress.{{ .Values.domain }}
+      podAnnotations: 
+        linkerd.io/inject: enabled
+      wordpressBlogName: "{{ .Values.environmentName }} Blog!"
+    set: []
+    valuesFrom: []
+  providerConfigRef:
+    name: {{ include "aws-default-addons.fullname" . }}
