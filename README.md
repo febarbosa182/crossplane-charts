@@ -1,6 +1,4 @@
-# poc-automated-infrastructure
-
-# Local 
+# Crossplane Infrastructure Helm Charts
 
 ## Requirements
 
@@ -8,8 +6,9 @@
  - [Helm 3](https://helm.sh/docs/intro/install/ "Helm 3 install page")
  - [Minikube](https://minikube.sigs.k8s.io/docs/start/ "Minikube install page")
  - [AWS Account IAM User](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html "AWS IAM User Credentials file")
+ - Domain with Hosted Zone on Route53
 
-> **NOTE:**AWS User should have administrator access
+> **NOTE:**AWS User should have administrator access for demonstration pourposes 
 
 ## Base Configuration
 
@@ -33,8 +32,8 @@ kubectl create namespace crossplane-system
 helm upgrade --install crossplane \
     crossplane-stable/crossplane \
     -n crossplane-system \
-    --version "1.4.1" \
-    --set provider.packages="{crossplane/provider-aws:v0.19.0,crossplane/provider-helm:v0.8.0}"
+    --version "1.6.1" \
+    --set provider.packages="{crossplane/provider-aws:v0.22.0,crossplane/provider-helm:v0.9.0}"
 ```
 
 Create a credentials file with your IAM User information:
@@ -57,7 +56,7 @@ Replace the environment variables by the path of your previously create credenti
 helm upgrade --install $ENVIRONMENT_NAME ./charts/aws-k8s-stack \
     --set-file creds=$YOUR_CREDENTIALS_FILE_PATH \
     --set region=$REGION \
-    --set fullnameOverride=$ENVIRONMENT_NAME \ 
+    --set fullnameOverride=$ENVIRONMENT_NAME \
     --set nameOverride=$ENVIRONMENT_NAME \
     --set route53.domain=$DOMAIN
 ```
@@ -66,7 +65,7 @@ Getting created resources:
 ```sh
 # Install crossplane kubectl addon
 curl -sL https://raw.githubusercontent.com/crossplane/crossplane/master/install.sh | sh
-# Getting managed resources
+# Getting managed resources status
 kubectl get managed
 ```
 
@@ -81,17 +80,19 @@ helm delete $ENVIRONMENT_NAME
 
 After cluster creation, addons instalation are enabled.
 
- - [EBS CSI Driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) 1.2.0
- - [External DNS](https://github.com/kubernetes-sigs/external-dns) 0.9.0
+ - [Cluster Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) 
+ - [EBS CSI Driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) 
+ - [External DNS](https://github.com/kubernetes-sigs/external-dns) 
+ - [Ingress NGINX](https://github.com/kubernetes/ingress-nginx)
 
 First get configuration and connection informations:
 ```sh
 # Associate OIDC with cluster
-eksctl utils associate-iam-oidc-provider --cluster $ENVIRONMENT_NAME --approve --region $REGION 
+eksctl utils associate-iam-oidc-provider --cluster $ENVIRONMENT_NAME --approve --region $REGION
 # Get OIDC URL
 OIDC_URL=$(aws eks describe-cluster --name $ENVIRONMENT_NAME --query "cluster.identity.oidc.issuer" --region $REGION --output text)
 # Get account ID
-ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" | tr -d '"')
+ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 ```
 
 Install definied addons stack
@@ -107,6 +108,7 @@ helm upgrade --install $ENVIRONMENT_NAME-addons ./charts/aws-default-addons \
 
 Generated tools UI:
 ```sh
+wordpress.$DOMAIN
 jaeger.$DOMAIN
 jenkins.$DOMAIN
 kubernetes-dashboard.$DOMAIN
@@ -118,8 +120,21 @@ ceph-dashboard.$DOMAIN
 linkerd.$DOMAIN
 ```
 
-For all generated tools these credentials for access:
-<br>
-Username: admin
-<br>
-Password: admindemo
+For all generated tools these credentials for access
+| Username | Password  |
+| :------: | :-------: |
+| admin    | admindemo |
+
+
+Deleting stack and addons:
+```sh
+helm delete $ENVIRONMENT_NAME-addons
+helm delete $ENVIRONMENT_NAME
+```
+
+## Next steps
+
+- Reduce/remoce necessity of eksctl for OIDC association
+- Improve tools configurations
+- Write charts NOTES.txt for install output
+- Increase stacks avaliable
