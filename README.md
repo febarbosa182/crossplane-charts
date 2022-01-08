@@ -134,7 +134,8 @@ helm delete $ENVIRONMENT_NAME
 
 ## Next steps
 
-- Reduce/remoce necessity of eksctl for OIDC association
-- Improve tools configurations
+- Do not use eksctl for OIDC association
+- Remove aditional command lines between stack creation and addons configuration
+- Improve tools configurations and capabilities
 - Write charts NOTES.txt for install output
 - Increase stacks avaliable
