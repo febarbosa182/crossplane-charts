@@ -16,6 +16,9 @@ creds: |
 # -- region where the infrastructure will be created
 region: us-east-2
 
+# -- default tags list for all resources with "key" and "value" format
+defaultTags: []
+
 vpc:
   # -- CIDR block for VPC
   cidrBlock: 10.0.0.0/16
@@ -58,7 +61,7 @@ nodeGroup:
   scalingConfig:
     desiredSize: 2
     maxSize: 3
-    minSize: 1 
+    minSize: 2
 
 route53:
   enabled: false

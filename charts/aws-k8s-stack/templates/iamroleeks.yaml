@@ -1,5 +1,5 @@
-apiVersion: identity.aws.crossplane.io/v1beta1
-kind: IAMRole
+apiVersion: iam.aws.crossplane.io/v1beta1
+kind: Role
 metadata:
   name: {{ include "aws-k8s-stack.fullname" . }}-eks
   labels:
@@ -7,6 +7,7 @@ metadata:
 spec:
   forProvider:
     description: "IAM ROLE EKS for {{ include "aws-k8s-stack.fullname" . }} cluster"
+    maxSessionDuration: 3600
     assumeRolePolicyDocument: |
       {
         "Version": "2012-10-17",
@@ -22,6 +23,8 @@ spec:
           }
         ]
       }
+    tags: 
+      {{- toYaml .Values.defaultTags | nindent 6 }}
   deletionPolicy: Delete
   providerConfigRef:
     name: {{ include "aws-k8s-stack.fullname" . }}
